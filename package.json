@@ -1,6 +1,6 @@
 {
   "name": "webpack-bundle-tracker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Spits out some stats about webpack compilation process to a file",
   "main": "index.js",
   "scripts": {
