@@ -62,7 +62,7 @@ In case webpack is still compiling, it'll look like,
 
 
 
-And erros will look like,
+And errors will look like,
 ```json
 {
   "status": "error",
