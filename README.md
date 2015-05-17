@@ -31,7 +31,7 @@ module.exports = {
     },
     
     plugins: [
-      new BundleTracker({filename: './assets/webpack-stats.json'})
+      new BundleTracker({path: __dirname, filename: './assets/webpack-stats.json'})
     ]
 }
 ```
