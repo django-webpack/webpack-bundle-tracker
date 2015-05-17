@@ -54,13 +54,7 @@ Plugin.prototype.apply = function(compiler) {
 Plugin.prototype.writeOutput = function(compiler, contents) {
   var outputDir = this.options.path || '.';
   var outputFilename = path.join(outputDir, this.options.filename || DEFAULT_OUTPUT_FILENAME);
-
-  var json = JSON.stringify(contents);
-  fs.writeFile(outputFilename, json, function(err) {
-  if (err) {
-    compiler.errors.push(new Error('Plugin: Unable to save to ' + outputFull));
-    }
-  });
+  fs.writeFileSync(outputFilename, JSON.stringify(contents));
 };
 
 module.exports = Plugin;
