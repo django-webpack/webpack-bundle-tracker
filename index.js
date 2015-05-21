@@ -15,12 +15,17 @@ Plugin.prototype.apply = function(compiler) {
 
     compiler.plugin('compilation', function(compilation, callback) {
       compilation.plugin('failed-module', function(fail){
-        self.writeOutput(compiler, {
+        var output = {
           status: 'error',
-          file: fail.error.module.userRequest,
-          error: fail.error.name,
-          message: stripAnsi(fail.error.error.codeFrame)
-        });
+          error: fail.error.name
+        };
+        if (fail.error.module !== undefined) {
+          output.file = fail.error.module.userRequest;
+        }
+        if (fail.error.error !== undefined) {
+          output.message = stripAnsi(fail.error.error.codeFrame);
+        }
+        self.writeOutput(compiler, output);
       });
     });
 
@@ -31,6 +36,10 @@ Plugin.prototype.apply = function(compiler) {
     compiler.plugin('emit', function(compiler, callback) {
       var chunks = {};
       var stats = compiler.getStats().toJson();
+      if (stats.errors.length > 0) {
+        self.writeOutput(compiler, {status: 'error', message: stats.errors[0]});
+        return callback();
+      }
 
       compiler.chunks.map(function(chunk){
         var files = chunk.files.map(function(file){
