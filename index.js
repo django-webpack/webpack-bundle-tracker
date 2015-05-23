@@ -33,15 +33,19 @@ Plugin.prototype.apply = function(compiler) {
       self.writeOutput(compiler, {status: 'compiling'});
     });
 
-    compiler.plugin('emit', function(compiler, callback) {
-      var chunks = {};
-      var stats = compiler.getStats().toJson();
-      if (stats.errors.length > 0) {
-        self.writeOutput(compiler, {status: 'error', message: stats.errors[0]});
-        return callback();
+    compiler.plugin('done', function(stats){
+      if (stats.compilation.errors.length > 0) {
+        var error = stats.compilation.errors[0];
+        self.writeOutput(compiler, {
+          status: 'error',
+          error: error['name'],
+          message: error['message']
+        });
+        return;
       }
 
-      compiler.chunks.map(function(chunk){
+      var chunks = {};
+      stats.compilation.chunks.map(function(chunk){
         var files = chunk.files.map(function(file){
           var F = {name: file};
           if (compiler.options.output.publicPath) {
@@ -55,7 +59,8 @@ Plugin.prototype.apply = function(compiler) {
         chunks[chunk.name] = files;
       });
       self.writeOutput(compiler, {status: 'done', chunks: chunks});
-      callback();
+
+
     });
 };
 
