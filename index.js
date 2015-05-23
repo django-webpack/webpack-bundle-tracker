@@ -58,9 +58,12 @@ Plugin.prototype.apply = function(compiler) {
         });
         chunks[chunk.name] = files;
       });
-      self.writeOutput(compiler, {status: 'done', chunks: chunks});
-
-
+      self.writeOutput(compiler, {
+        status: 'done',
+        chunks: chunks,
+        startTime: stats.startTime,
+        endTime: stats.endTime
+      });
     });
 };
 
