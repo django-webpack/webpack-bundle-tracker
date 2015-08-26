@@ -74,3 +74,20 @@ And errors will look like,
 
 `ErrorMessage` shows the line and column that caused the error.
 
+
+
+And in case `logTime` option is set to `true`, the output will look like,
+```
+{
+  "status":"done",
+  "chunks":{
+   "app":[{
+      "name":"app-0828904584990b611fb8.js",
+      "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+      "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
+    }]
+  },
+  "startTime":1440535322138,
+  "endTime":1440535326804
+}
+```

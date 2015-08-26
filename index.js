@@ -4,10 +4,16 @@ var stripAnsi = require('strip-ansi');
 
 var assets = {};
 var DEFAULT_OUTPUT_FILENAME = 'webpack-stats.json';
+var DEFAULT_LOG_TIME = false;
 
 
 function Plugin(options) {
   this.options = options || {};
+  this.options.filename = this.options.filename || DEFAULT_OUTPUT_FILENAME;
+  console.log(this.options);
+  if (this.options.logTime === undefined) {
+    this.options.logTime = DEFAULT_LOG_TIME;
+  }
 }
 
 Plugin.prototype.apply = function(compiler) {
@@ -58,12 +64,17 @@ Plugin.prototype.apply = function(compiler) {
         });
         chunks[chunk.name] = files;
       });
-      self.writeOutput(compiler, {
+      var output = {
         status: 'done',
-        chunks: chunks,
-        startTime: stats.startTime,
-        endTime: stats.endTime
-      });
+        chunks: chunks
+      };
+
+      if (self.options.logTime === true) {
+          output.startTime = stats.startTime,
+          output.endTime = stats.endTime
+      }
+
+      self.writeOutput(compiler, output);
     });
 };
 
