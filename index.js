@@ -10,7 +10,6 @@ var DEFAULT_LOG_TIME = false;
 function Plugin(options) {
   this.options = options || {};
   this.options.filename = this.options.filename || DEFAULT_OUTPUT_FILENAME;
-  console.log(this.options);
   if (this.options.logTime === undefined) {
     this.options.logTime = DEFAULT_LOG_TIME;
   }
