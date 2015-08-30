@@ -34,7 +34,7 @@ Plugin.prototype.apply = function(compiler) {
       });
     });
 
-    compiler.plugin('compile', function(compiler, callback) {
+    compiler.plugin('compile', function(factory, callback) {
       self.writeOutput(compiler, {status: 'compiling'});
     });
 
@@ -81,6 +81,9 @@ Plugin.prototype.apply = function(compiler) {
 Plugin.prototype.writeOutput = function(compiler, contents) {
   var outputDir = this.options.path || '.';
   var outputFilename = path.join(outputDir, this.options.filename || DEFAULT_OUTPUT_FILENAME);
+  if (compiler.options.output.publicPath) {
+    contents.publicPath = compiler.options.output.publicPath
+  }
   fs.writeFileSync(outputFilename, JSON.stringify(contents));
 };
 
