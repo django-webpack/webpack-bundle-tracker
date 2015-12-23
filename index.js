@@ -1,6 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 var stripAnsi = require('strip-ansi');
+var mkdirp = require('mkdirp');
 
 var assets = {};
 var DEFAULT_OUTPUT_FILENAME = 'webpack-stats.json';
@@ -69,8 +70,8 @@ Plugin.prototype.apply = function(compiler) {
       };
 
       if (self.options.logTime === true) {
-          output.startTime = stats.startTime,
-          output.endTime = stats.endTime
+        output.startTime = stats.startTime;
+        output.endTime = stats.endTime;
       }
 
       self.writeOutput(compiler, output);
@@ -82,8 +83,9 @@ Plugin.prototype.writeOutput = function(compiler, contents) {
   var outputDir = this.options.path || '.';
   var outputFilename = path.join(outputDir, this.options.filename || DEFAULT_OUTPUT_FILENAME);
   if (compiler.options.output.publicPath) {
-    contents.publicPath = compiler.options.output.publicPath
+    contents.publicPath = compiler.options.output.publicPath;
   }
+  mkdirp.sync(path.dirname(outputFilename));
   fs.writeFileSync(outputFilename, JSON.stringify(contents));
 };
 
