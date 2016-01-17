@@ -8,12 +8,15 @@ var DEFAULT_OUTPUT_FILENAME = 'webpack-stats.json';
 var DEFAULT_LOG_TIME = false;
 
 
+var DONE_CHUNKS = {};
+
 function Plugin(options) {
   this.options = options || {};
   this.options.filename = this.options.filename || DEFAULT_OUTPUT_FILENAME;
   if (this.options.logTime === undefined) {
     this.options.logTime = DEFAULT_LOG_TIME;
   }
+  this._compiledChunks = {};
 }
 
 Plugin.prototype.apply = function(compiler) {
@@ -36,6 +39,7 @@ Plugin.prototype.apply = function(compiler) {
     });
 
     compiler.plugin('compile', function(factory, callback) {
+      self._compiledChunks = {};
       self.writeOutput(compiler, {status: 'compiling'});
     });
 
@@ -45,14 +49,15 @@ Plugin.prototype.apply = function(compiler) {
         self.writeOutput(compiler, {
           status: 'error',
           error: error['name'],
-          message: error['message']
+          message: error['message'],
+          chunks: self._compiledChunks
         });
         return;
       }
 
-      var chunks = {};
       stats.compilation.chunks.map(function(chunk){
-        var files = chunk.files.map(function(file){
+        self._compiledChunks[chunk.name] = self._compiledChunks[chunk.name] || [];
+        chunk.files.map(function(file){
           var F = {name: file};
           if (compiler.options.output.publicPath) {
             F.publicPath= compiler.options.output.publicPath + file;
@@ -60,13 +65,12 @@ Plugin.prototype.apply = function(compiler) {
           if (compiler.options.output.path) {
             F.path = path.join(compiler.options.output.path, file);
           }
-          return F;
+          self._compiledChunks[chunk.name].push(F);
         });
-        chunks[chunk.name] = files;
       });
       var output = {
         status: 'done',
-        chunks: chunks
+        chunks: self._compiledChunks
       };
 
       if (self.options.logTime === true) {
