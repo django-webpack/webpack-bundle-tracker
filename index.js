@@ -14,6 +14,15 @@ function Plugin(options) {
   if (this.options.logTime === undefined) {
     this.options.logTime = DEFAULT_LOG_TIME;
   }
+
+  if (typeof this.options.indent === 'undefined') { this.options.indent = null; }
+  if (this.options.indent !== null) {
+    if (typeof this.options.indent === 'boolean' && this.options.indent) {
+      this.options.indent = this.options.indent ? 2 : null;
+    } else if (typeof this.options.indent !== 'string' && typeof this.options.indent !== 'number') {
+      throw new Error('Indent should be of type boolean, number, or string, was ' + typeof this.options.indent);
+    }
+  }
 }
 
 Plugin.prototype.apply = function(compiler) {
@@ -86,7 +95,7 @@ Plugin.prototype.writeOutput = function(compiler, contents) {
     contents.publicPath = compiler.options.output.publicPath;
   }
   mkdirp.sync(path.dirname(outputFilename));
-  fs.writeFileSync(outputFilename, JSON.stringify(contents));
+  fs.writeFileSync(outputFilename, JSON.stringify(contents, null, this.options.indent));
 };
 
 module.exports = Plugin;

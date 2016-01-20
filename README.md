@@ -91,3 +91,10 @@ And in case `logTime` option is set to `true`, the output will look like,
   "endTime":1440535326804
 }
 ```
+
+
+
+By default, the output JSON will not be indented. To increase readability, you can use the `indent`
+option to make the output legible. By default it is off. However you can pass in either a `number` or `string` to
+indicate the length or characters to use for indentation. You can also supply `true` to enable the default of a
+two space indentation.
