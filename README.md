@@ -95,6 +95,6 @@ And in case `logTime` option is set to `true`, the output will look like,
 
 
 By default, the output JSON will not be indented. To increase readability, you can use the `indent`
-option to make the output legible. By default it is off. However you can pass in either a `number` or `string` to
-indicate the length or characters to use for indentation. You can also supply `true` to enable the default of a
-two space indentation.
+option to make the output legible. By default it is off. The value that is set here will be directly
+passed to the `space` parameter in `JSON.stringify`. More information can be found here:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
