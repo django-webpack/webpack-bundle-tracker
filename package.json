@@ -1,6 +1,6 @@
 {
   "name": "webpack-bundle-tracker",
-  "version": "0.0.9",
+  "version": "0.0.92",
   "description": "Spits out some stats about webpack compilation process to a file",
   "license": "MIT",
   "main": "index.js",
