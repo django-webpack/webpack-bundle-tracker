@@ -8,8 +8,6 @@ var DEFAULT_OUTPUT_FILENAME = 'webpack-stats.json';
 var DEFAULT_LOG_TIME = false;
 
 
-var DONE_CHUNKS = {};
-
 function Plugin(options) {
   this.options = options || {};
   this.options.filename = this.options.filename || DEFAULT_OUTPUT_FILENAME;
