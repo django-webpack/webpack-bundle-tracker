@@ -86,7 +86,7 @@ Plugin.prototype.writeOutput = function(compiler, contents) {
     contents.publicPath = compiler.options.output.publicPath;
   }
   mkdirp.sync(path.dirname(outputFilename));
-  fs.writeFileSync(outputFilename, JSON.stringify(contents));
+  fs.writeFileSync(outputFilename, JSON.stringify(contents, null, this.options.indent));
 };
 
 module.exports = Plugin;
