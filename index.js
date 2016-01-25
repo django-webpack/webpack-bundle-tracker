@@ -45,7 +45,7 @@ Plugin.prototype.apply = function(compiler) {
         self.writeOutput(compiler, {
           status: 'error',
           error: error['name'],
-          message: error['message']
+          message: stripAnsi(error['message'])
         });
         return;
       }
