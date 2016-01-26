@@ -14,6 +14,9 @@ function Plugin(options) {
   if (this.options.logTime === undefined) {
     this.options.logTime = DEFAULT_LOG_TIME;
   }
+  if (this.options.includePath === undefined) {
+    this.options.includePath = true;
+  }
 }
 
 Plugin.prototype.apply = function(compiler) {
@@ -57,7 +60,7 @@ Plugin.prototype.apply = function(compiler) {
           if (compiler.options.output.publicPath) {
             F.publicPath= compiler.options.output.publicPath + file;
           }
-          if (compiler.options.output.path) {
+          if (self.options.includePath && compiler.options.output.path) {
             F.path = path.join(compiler.options.output.path, file);
           }
           return F;
