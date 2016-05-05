@@ -14,6 +14,7 @@ function Plugin(options) {
   if (this.options.logTime === undefined) {
     this.options.logTime = DEFAULT_LOG_TIME;
   }
+  this.options.append = options.append || false;
 }
 
 Plugin.prototype.apply = function(compiler) {
@@ -86,7 +87,11 @@ Plugin.prototype.writeOutput = function(compiler, contents) {
     contents.publicPath = compiler.options.output.publicPath;
   }
   mkdirp.sync(path.dirname(outputFilename));
-  fs.writeFileSync(outputFilename, JSON.stringify(contents, null, this.options.indent));
+  if (this.options.append) {
+    fs.appendFileSync(outputFilename, JSON.stringify(contents, null, this.options.indent));
+  } else {
+    fs.writeFileSync(outputFilename, JSON.stringify(contents, null, this.options.indent));
+  }
 };
 
 module.exports = Plugin;
