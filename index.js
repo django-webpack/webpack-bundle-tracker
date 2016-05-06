@@ -86,6 +86,21 @@ Plugin.prototype.writeOutput = function(compiler, contents) {
     contents.publicPath = compiler.options.output.publicPath;
   }
   mkdirp.sync(path.dirname(outputFilename));
+  var existingStats = {};
+  try {
+    existingStats = fs.readFileSync(outputFilename);
+    existingStats = JSON.parse(existingStats);
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      // If the error isn't caused by a non-existent file, throw it.
+      throw error;
+    }
+  }
+  if (existingStats.status === 'done') {
+    // Only append to existing chunks if the previous stats file status is 'done'.
+    var mergedChunks = Object.assign(existingStats.chunks, contents.chunks);
+    contents.chunks = mergedChunks;
+  }
   fs.writeFileSync(outputFilename, JSON.stringify(contents, null, this.options.indent));
 };
 
