@@ -86,7 +86,7 @@ Plugin.prototype.writeOutput = function(compiler, contents) {
     contents.publicPath = compiler.options.output.publicPath;
   }
   mkdirp.sync(path.dirname(outputFilename));
-  var existingStats = {};
+  var existingStats = '{}';
   try {
     existingStats = fs.readFileSync(outputFilename);
   } catch (error) {
