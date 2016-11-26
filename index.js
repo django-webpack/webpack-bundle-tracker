@@ -9,6 +9,7 @@ var DEFAULT_LOG_TIME = false;
 
 
 function Plugin(options) {
+  this.contents = {};
   this.options = options || {};
   this.options.filename = this.options.filename || DEFAULT_OUTPUT_FILENAME;
   if (this.options.logTime === undefined) {
@@ -23,7 +24,7 @@ Plugin.prototype.apply = function(compiler) {
       compilation.plugin('failed-module', function(fail){
         var output = {
           status: 'error',
-          error: fail.error.name
+          error: fail.error.name || 'unknown-error'
         };
         if (fail.error.module !== undefined) {
           output.file = fail.error.module.userRequest;
@@ -44,7 +45,7 @@ Plugin.prototype.apply = function(compiler) {
         var error = stats.compilation.errors[0];
         self.writeOutput(compiler, {
           status: 'error',
-          error: error['name'],
+          error: error['name'] || 'unknown-error',
           message: stripAnsi(error['message'])
         });
         return;
@@ -86,7 +87,12 @@ Plugin.prototype.writeOutput = function(compiler, contents) {
     contents.publicPath = compiler.options.output.publicPath;
   }
   mkdirp.sync(path.dirname(outputFilename));
-  fs.writeFileSync(outputFilename, JSON.stringify(contents, null, this.options.indent));
+
+  this.contents = Object.assign(this.contents, contents);
+  fs.writeFileSync(
+    outputFilename,
+    JSON.stringify(this.contents, null, this.options.indent)
+  );
 };
 
 module.exports = Plugin;
