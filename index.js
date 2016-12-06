@@ -1,3 +1,5 @@
+"use strict;"
+
 var path = require('path');
 var fs = require('fs');
 var stripAnsi = require('strip-ansi');
@@ -52,22 +54,42 @@ Plugin.prototype.apply = function(compiler) {
       }
 
       var chunks = {};
-      stats.compilation.chunks.map(function(chunk){
-        var files = chunk.files.map(function(file){
-          var F = {name: file};
-          if (compiler.options.output.publicPath) {
-            F.publicPath= compiler.options.output.publicPath + file;
-          }
-          if (compiler.options.output.path) {
-            F.path = path.join(compiler.options.output.path, file);
-          }
-          return F;
-        });
-        chunks[chunk.name] = files;
+      var assets = {};
+      stats.compilation.chunks.map(function(chunk) {
+        if (chunk.name == "exported_assets"){
+          // each module represents a list of assets with only one item or the file itself/ improper loaded assets
+          chunk.modules.map(function(module){
+            var fileName = Object.keys(module.assets)[0];
+            if (fileName !== undefined && fileName.endsWith("exported-assets.js") !== true) {
+              var asset = {};
+              if (compiler.options.output.publicPath) {
+                asset.publicPath = compiler.options.output.publicPath + fileName;
+              }
+              if (compiler.options.output.path) {
+                asset.path = path.join(compiler.options.output.path, fileName);
+              }
+
+              assets[module.rawRequest] = asset;
+            }
+          });
+        } else {
+          var files = chunk.files.map(function(file){
+            var F = {name: file};
+            if (compiler.options.output.publicPath) {
+              F.publicPath= compiler.options.output.publicPath + file;
+            }
+            if (compiler.options.output.path) {
+              F.path = path.join(compiler.options.output.path, file);
+            }
+            return F;
+          });
+          chunks[chunk.name] = files;
+        }
       });
       var output = {
         status: 'done',
-        chunks: chunks
+        chunks: chunks,
+        exported_assets: assets
       };
 
       if (self.options.logTime === true) {
@@ -96,3 +118,4 @@ Plugin.prototype.writeOutput = function(compiler, contents) {
 };
 
 module.exports = Plugin;
+
