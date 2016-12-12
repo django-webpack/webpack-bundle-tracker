@@ -58,7 +58,7 @@ Plugin.prototype.apply = function(compiler) {
       var chunks = {};
       var assets = {};
       stats.compilation.chunks.map(function(chunk) {
-        if (chunk.name == self.){
+        if (chunk.name == self.options.assetsIdentifier){
           // each module represents a list of assets with only one item or the file itself/ improper loaded assets
           chunk.modules.map(function(module){
             var fileName = Object.keys(module.assets)[0];
@@ -88,11 +88,12 @@ Plugin.prototype.apply = function(compiler) {
           chunks[chunk.name] = files;
         }
       });
+
       var output = {
         status: 'done',
-        chunks: chunks,
-        self.options.assetsIdentifier: assets
+        chunks: chunks
       };
+      output[self.options.assetsIdentifier] = assets;
 
       if (self.options.logTime === true) {
         output.startTime = stats.startTime;
@@ -120,4 +121,5 @@ Plugin.prototype.writeOutput = function(compiler, contents) {
 };
 
 module.exports = Plugin;
+
 

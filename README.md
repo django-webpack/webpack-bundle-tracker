@@ -21,7 +21,8 @@ var BundleTracker  = require('webpack-bundle-tracker');
 module.exports = {
         context: __dirname,
     entry: {
-      app: ['./app']
+      app: ['./app'],
+      exported_assets: "./assets/exported-assets.js"
     },
     
     output: {
@@ -36,6 +37,12 @@ module.exports = {
 }
 ```
 
+`./assets/exported-assets.js` will look like,
+
+```javascript
+require("./assets/my_asset.png");
+```
+
 `./assets/webpack-stats.json` will look like,
 
 ```json
@@ -46,8 +53,15 @@ module.exports = {
       "name":"app-0828904584990b611fb8.js",
       "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
       "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
-    }]
-  }
+    }],
+    "exported_assets": {
+      "./assets/my_asset.png":{
+        "name":"e9f0767cc79a227912c41ad07b09d91f.png",
+        "publicPath":"http://localhost:3000/assets/bundles/e9f0767cc79a227912c41ad07b09d91f.png",
+        "path":"/home/user/project-root/assets/bundles/e9f0767cc79a227912c41ad07b09d91f.png"
+      }
+    }
+  }  
 }
 ```
 
@@ -85,7 +99,14 @@ And in case `logTime` option is set to `true`, the output will look like,
       "name":"app-0828904584990b611fb8.js",
       "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
       "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
-    }]
+    }],
+    "exported_assets": {
+      "./assets/my_asset.png":{
+        "name":"e9f0767cc79a227912c41ad07b09d91f.png",
+        "publicPath":"http://localhost:3000/assets/bundles/e9f0767cc79a227912c41ad07b09d91f.png",
+        "path":"/home/user/project-root/assets/bundles/e9f0767cc79a227912c41ad07b09d91f.png"
+      }
+    }
   },
   "startTime":1440535322138,
   "endTime":1440535326804
