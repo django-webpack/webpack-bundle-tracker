@@ -29,6 +29,7 @@ var buildAsset = function(compiler, chunk, fileName) {
   if (compiler.options.output.path) {
     asset.path = path.join(compiler.options.output.path, fileName);
   }
+  return asset;
 };
 
 var buildChunk = function(compiler, chunk) {
@@ -42,7 +43,7 @@ var buildChunk = function(compiler, chunk) {
     }
     return F;
   });
-
+  return files;
 };
 
 Plugin.prototype.apply = function(compiler) {
