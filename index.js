@@ -21,6 +21,30 @@ function Plugin(options) {
   }
 }
 
+var buildAsset = function(compiler, chunk, fileName) {
+  var asset = {name: fileName};
+  if (compiler.options.output.publicPath) {
+    asset.publicPath = compiler.options.output.publicPath + fileName;
+  }
+  if (compiler.options.output.path) {
+    asset.path = path.join(compiler.options.output.path, fileName);
+  }
+};
+
+var buildChunk = function(compiler, chunk) {
+  var files = chunk.files.map(function(file){
+    var F = {name: file};
+    if (compiler.options.output.publicPath) {
+      F.publicPath= compiler.options.output.publicPath + file;
+    }
+    if (compiler.options.output.path) {
+      F.path = path.join(compiler.options.output.path, file);
+    }
+    return F;
+  });
+
+};
+
 Plugin.prototype.apply = function(compiler) {
     var self = this;
 
@@ -63,29 +87,11 @@ Plugin.prototype.apply = function(compiler) {
           chunk.modules.map(function(module){
             var fileName = Object.keys(module.assets)[0];
             if (fileName !== undefined && fileName.endsWith(self.options.assetsIdentifier + ".js") !== true) {
-              var asset = {name: fileName};
-              if (compiler.options.output.publicPath) {
-                asset.publicPath = compiler.options.output.publicPath + fileName;
-              }
-              if (compiler.options.output.path) {
-                asset.path = path.join(compiler.options.output.path, fileName);
-              }
-
-              assets[module.rawRequest] = asset;
+              assets[module.rawRequest] = buildAsset(compiler, chunk, fileName);
             }
           });
         } else {
-          var files = chunk.files.map(function(file){
-            var F = {name: file};
-            if (compiler.options.output.publicPath) {
-              F.publicPath= compiler.options.output.publicPath + file;
-            }
-            if (compiler.options.output.path) {
-              F.path = path.join(compiler.options.output.path, file);
-            }
-            return F;
-          });
-          chunks[chunk.name] = files;
+          chunks[chunk.name] = buildChunk(compiler, chunk);
         }
       });
 
@@ -121,5 +127,3 @@ Plugin.prototype.writeOutput = function(compiler, contents) {
 };
 
 module.exports = Plugin;
-
-
