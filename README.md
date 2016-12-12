@@ -22,26 +22,28 @@ module.exports = {
         context: __dirname,
     entry: {
       app: ['./app'],
-      exported_assets: "./assets/exported-assets.js"
+      exported_assets: "./assets/exported_assets.js"
     },
-    
+
     output: {
         path: require("path").resolve('./assets/bundles/'),
         filename: "[name]-[hash].js",
         publicPath: 'http://localhost:3000/assets/bundles/',
     },
-    
+
     plugins: [
       new BundleTracker({path: __dirname, filename: './assets/webpack-stats.json'})
     ]
 }
 ```
 
-`./assets/exported-assets.js` will look like,
+`./assets/exported_assets.js` will look like,
 
 ```javascript
 require("./assets/my_asset.png");
 ```
+
+Keep in mind that the filename and the identifier should be the same as the identifier will be exposed in the webstats-file as a key. (filename: exported_assets.js; identifier: exported_assets)
 
 `./assets/webpack-stats.json` will look like,
 
@@ -61,7 +63,7 @@ require("./assets/my_asset.png");
         "path":"/home/user/project-root/assets/bundles/e9f0767cc79a227912c41ad07b09d91f.png"
       }
     }
-  }  
+  }
 }
 ```
 
@@ -81,7 +83,7 @@ And errors will look like,
 {
   "status": "error",
   "file": "/path/to/file/that/caused/the/error",
-  "error": "ErrorName", 
+  "error": "ErrorName",
   "message": "ErrorMessage"
 }
 ```
