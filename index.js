@@ -11,7 +11,7 @@ var DEFAULT_ASSETS_IDENTIFIER = 'exported_assets';
 var DEFAULT_LOG_TIME = false;
 
 
-function Plugin(options, assets_file) {
+function Plugin(options) {
   this.contents = {};
   this.options = options || {};
   this.options.filename = this.options.filename || DEFAULT_OUTPUT_FILENAME;
