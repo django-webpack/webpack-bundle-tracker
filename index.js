@@ -7,13 +7,15 @@ var mkdirp = require('mkdirp');
 
 var assets = {};
 var DEFAULT_OUTPUT_FILENAME = 'webpack-stats.json';
+var DEFAULT_ASSETS_IDENTIFIER = 'exported_assets';
 var DEFAULT_LOG_TIME = false;
 
 
-function Plugin(options) {
+function Plugin(options, assets_file) {
   this.contents = {};
   this.options = options || {};
   this.options.filename = this.options.filename || DEFAULT_OUTPUT_FILENAME;
+  this.options.assetsIdentifier = this.options.assetsIdentifier || DEFAULT_ASSETS_IDENTIFIER;
   if (this.options.logTime === undefined) {
     this.options.logTime = DEFAULT_LOG_TIME;
   }
@@ -56,12 +58,12 @@ Plugin.prototype.apply = function(compiler) {
       var chunks = {};
       var assets = {};
       stats.compilation.chunks.map(function(chunk) {
-        if (chunk.name == "exported_assets"){
+        if (chunk.name == self.){
           // each module represents a list of assets with only one item or the file itself/ improper loaded assets
           chunk.modules.map(function(module){
             var fileName = Object.keys(module.assets)[0];
-            if (fileName !== undefined && fileName.endsWith("exported-assets.js") !== true) {
-              var asset = {};
+            if (fileName !== undefined && fileName.endsWith(self.options.assetsIdentifier + ".js") !== true) {
+              var asset = {name: fileName};
               if (compiler.options.output.publicPath) {
                 asset.publicPath = compiler.options.output.publicPath + fileName;
               }
@@ -89,7 +91,7 @@ Plugin.prototype.apply = function(compiler) {
       var output = {
         status: 'done',
         chunks: chunks,
-        exported_assets: assets
+        self.options.assetsIdentifier: assets
       };
 
       if (self.options.logTime === true) {
