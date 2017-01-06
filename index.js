@@ -53,6 +53,12 @@ Plugin.prototype.apply = function(compiler) {
       }
 
       var chunks = {};
+      var outputDir = this.options.path || '.';
+      var outputFilename = path.join(outputDir, this.options.filename || DEFAULT_OUTPUT_FILENAME);
+      var obj = JSON.parse(fs.readFileSync(outputFilename, 'utf8'));
+      if (obj.status == 'done') {
+          chunks = obj.chunks;
+      }
       stats.compilation.chunks.map(function(chunk){
         var files = chunk.files.map(function(file){
           var F = {name: file};
@@ -64,7 +70,11 @@ Plugin.prototype.apply = function(compiler) {
           }
           return F;
         });
-        chunks[chunk.name] = files;
+        if (chunks[chunk.name]) {
+            chunks[chunk.name] =  chunks[chunk.name].concat(files)
+        } else {
+            chunks[chunk.name] = files;
+        }
       });
       var output = {
         status: 'done',
