@@ -75,8 +75,11 @@ And errors will look like,
 `ErrorMessage` shows the line and column that caused the error.
 
 
+#### Options
 
-And in case `logTime` option is set to `true`, the output will look like,
+##### logTime
+
+If the `logTime` option is set to `true`, the output will look like,
 ```
 {
   "status":"done",
@@ -92,9 +95,24 @@ And in case `logTime` option is set to `true`, the output will look like,
 }
 ```
 
-
+##### indent
 
 By default, the output JSON will not be indented. To increase readability, you can use the `indent`
 option to make the output legible. By default it is off. The value that is set here will be directly
 passed to the `space` parameter in `JSON.stringify`. More information can be found here:
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+
+##### includePath
+
+If the `includePath` option is set to `false`, the output will look like,
+```
+{
+  "status":"done",
+  "chunks":{
+   "app":[{
+      "name":"app-0828904584990b611fb8.js",
+      "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+    }]
+  },
+}
+```
