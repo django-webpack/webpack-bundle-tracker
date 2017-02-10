@@ -12,6 +12,7 @@ var DEFAULT_LOG_TIME = false;
 function Plugin(options) {
   this.contents = {};
   this.options = options || {};
+  this.options.ignoreErrors = this.options.ignoreErrors || false;
   this.options.filename = this.options.filename || DEFAULT_OUTPUT_FILENAME;
   if (this.options.logTime === undefined) {
     this.options.logTime = DEFAULT_LOG_TIME;
@@ -42,7 +43,7 @@ Plugin.prototype.apply = function(compiler) {
     });
 
     compiler.plugin('done', function(stats){
-      if (stats.compilation.errors.length > 0) {
+      if (stats.compilation.errors.length > 0 && !self.options.ignoreErrors) {
         var error = stats.compilation.errors[0];
         self.writeOutput(compiler, {
           status: 'error',
