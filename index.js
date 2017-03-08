@@ -64,7 +64,8 @@ Plugin.prototype.apply = function(compiler) {
           }
           return F;
         });
-        chunks[chunk.name] = files;
+        var chunkName = chunk.name || '_dynamic';
+        chunks[chunkName] = [].concat(chunks[chunkName] || [], files);
       });
       var output = {
         status: 'done',
