@@ -94,10 +94,10 @@ And in case `logTime` option is set to `true`, the output will look like,
 
 To track all assets output by webpack, pass the `trackAssets: true` option to the plugin:
 
-javascript
+```javascript
 var BundleTracker  = require('webpack-bundle-tracker');
 module.exports = {
-        context: __dirname,
+    context: __dirname,
     entry: {
       app: ['./app']
     },
