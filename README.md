@@ -151,7 +151,7 @@ and the output will look like:
       {
         "name":"912ec66d7572ff821749319396470bde.svg",
         "publicPath":"/static/bundles/912ec66d7572ff821749319396470bde.svg",
-        "path":"/Users/ryanar/Code/rit-das-pdp/pd/static/bundles/912ec66d7572ff821749319396470bde.svg"
+        "path":"/home/user/project-root/assets/bundles/912ec66d7572ff821749319396470bde.svg"
       }
     ]
   }
