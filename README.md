@@ -94,10 +94,10 @@ And in case `logTime` option is set to `true`, the output will look like,
 
 To track all assets output by webpack, pass the `trackAssets: true` option to the plugin:
 
-javascript
+```javascript
 var BundleTracker  = require('webpack-bundle-tracker');
 module.exports = {
-        context: __dirname,
+    context: __dirname,
     entry: {
       app: ['./app']
     },
@@ -149,9 +149,9 @@ and the output will look like:
         "path":"/home/user/project-root/assets/bundles/app-eef39b47d0d3ee.css"
       },
       {
-        "name":912ec66d7572ff821749319396470bde.svg",
+        "name":"912ec66d7572ff821749319396470bde.svg",
         "publicPath":"/static/bundles/912ec66d7572ff821749319396470bde.svg",
-        "path":"/Users/ryanar/Code/rit-das-pdp/pd/static/bundles/912ec66d7572ff821749319396470bde.svg"
+        "path":"/home/user/project-root/assets/bundles/912ec66d7572ff821749319396470bde.svg"
       }
     ]
   }
