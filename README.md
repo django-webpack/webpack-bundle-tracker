@@ -23,13 +23,13 @@ module.exports = {
     entry: {
       app: ['./app']
     },
-    
+
     output: {
         path: require("path").resolve('./assets/bundles/'),
         filename: "[name]-[hash].js",
         publicPath: 'http://localhost:3000/assets/bundles/',
     },
-    
+
     plugins: [
       new BundleTracker({path: __dirname, filename: './assets/webpack-stats.json'})
     ]
@@ -42,7 +42,7 @@ module.exports = {
 {
   "status":"done",
   "chunks":{
-   "app":[{
+    "app":[{
       "name":"app-0828904584990b611fb8.js",
       "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
       "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
@@ -67,7 +67,7 @@ And errors will look like,
 {
   "status": "error",
   "file": "/path/to/file/that/caused/the/error",
-  "error": "ErrorName", 
+  "error": "ErrorName",
   "message": "ErrorMessage"
 }
 ```
@@ -92,7 +92,73 @@ And in case `logTime` option is set to `true`, the output will look like,
 }
 ```
 
+To track all assets output by webpack, pass the `trackAssets: true` option to the plugin:
 
+```javascript
+var BundleTracker  = require('webpack-bundle-tracker');
+module.exports = {
+    context: __dirname,
+    entry: {
+      app: ['./app']
+    },
+
+    output: {
+        path: require("path").resolve('./assets/bundles/'),
+        filename: "[name]-[hash].js",
+        publicPath: 'http://localhost:3000/assets/bundles/',
+    },
+
+    plugins: [
+      new BundleTracker({
+        path: __dirname,
+        filename: './assets/webpack-stats.json',
+        trackAssets: true,
+        assetsChunkName: 'assets' // defaults to this
+      })
+    ]
+}
+```
+
+and the output will look like:
+
+```json
+{
+  "status":"done",
+  "chunks":{
+    "app":[
+      {
+        "name":"app-0828904584990b611fb8.js",
+        "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+        "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
+      }
+    ],
+    "assets":[
+      {
+        "name":"app-0828904584990b611fb8.js",
+        "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+        "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
+      },
+      {
+        "name":"app-0828904584990b611fb8.js.gz",
+        "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js.gz",
+        "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js.gz"
+      },
+      {
+        "name":"app-eef39b47d0d3ee.css",
+        "publicPath":"http://localhost:3000/assets/bundles/app-eef39b47d0d3ee.css",
+        "path":"/home/user/project-root/assets/bundles/app-eef39b47d0d3ee.css"
+      },
+      {
+        "name":"912ec66d7572ff821749319396470bde.svg",
+        "publicPath":"/static/bundles/912ec66d7572ff821749319396470bde.svg",
+        "path":"/home/user/project-root/assets/bundles/912ec66d7572ff821749319396470bde.svg"
+      }
+    ]
+  }
+}
+```
+
+This option allows all assets to be tracked and accessed but can result in much larger `.json` files.
 
 By default, the output JSON will not be indented. To increase readability, you can use the `indent`
 option to make the output legible. By default it is off. The value that is set here will be directly

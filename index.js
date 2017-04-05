@@ -7,12 +7,15 @@ var extend = require('deep-extend');
 var assets = {};
 var DEFAULT_OUTPUT_FILENAME = 'webpack-stats.json';
 var DEFAULT_LOG_TIME = false;
+var DEFAULT_ASSET_CHUNK_NAME = 'assets';
 
 
 function Plugin(options) {
   this.contents = {};
   this.options = options || {};
   this.options.filename = this.options.filename || DEFAULT_OUTPUT_FILENAME;
+  this.options.trackAssets = this.options.trackAssets || false;
+  this.options.assetsChunkName = this.options.assetsChunkName || DEFAULT_ASSET_CHUNK_NAME;
   if (this.options.logTime === undefined) {
     this.options.logTime = DEFAULT_LOG_TIME;
   }
@@ -57,7 +60,7 @@ Plugin.prototype.apply = function(compiler) {
         var files = chunk.files.map(function(file){
           var F = {name: file};
           if (compiler.options.output.publicPath) {
-            F.publicPath= compiler.options.output.publicPath + file;
+            F.publicPath = compiler.options.output.publicPath + file;
           }
           if (compiler.options.output.path) {
             F.path = path.join(compiler.options.output.path, file);
@@ -66,6 +69,22 @@ Plugin.prototype.apply = function(compiler) {
         });
         chunks[chunk.name] = files;
       });
+
+      if (self.options.trackAssets === true) {
+        var assets = [];
+        Object.keys(stats.compilation.assets).map(function(asset){
+          var F = {name: asset};
+          if (compiler.options.output.publicPath) {
+            F.publicPath= compiler.options.output.publicPath + asset;
+          }
+          if (compiler.options.output.path) {
+            F.path = path.join(compiler.options.output.path, asset);
+          }
+          assets.push(F);
+        });
+        chunks[DEFAULT_ASSET_CHUNK_NAME] = assets;
+      }
+
       var output = {
         status: 'done',
         chunks: chunks
