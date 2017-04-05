@@ -70,7 +70,7 @@ Plugin.prototype.apply = function(compiler) {
         chunks[chunk.name] = files;
       });
 
-      if (this.options.trackAssets) {
+      if (self.options.trackAssets === true) {
         var assets = [];
         Object.keys(stats.compilation.assets).map(function(asset){
           var F = {name: asset};
