@@ -32,6 +32,8 @@ Plugin.prototype.apply = function(compiler) {
         }
         if (fail.error.error !== undefined) {
           output.message = stripAnsi(fail.error.error.codeFrame);
+        } else {
+          output.message = '';
         }
         self.writeOutput(compiler, output);
       });
