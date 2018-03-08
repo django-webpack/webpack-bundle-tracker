@@ -58,8 +58,9 @@ Plugin.prototype.apply = function(compiler) {
       stats.compilation.chunks.map(function(chunk){
         var files = chunk.files.map(function(file){
           var F = {name: file};
-          if (compiler.options.output.publicPath) {
-            F.publicPath= compiler.options.output.publicPath + file;
+          var publicPath = self.options.publicPath || compiler.options.output.publicPath;
+          if (publicPath) {
+            F.publicPath = publicPath + file;
           }
           if (compiler.options.output.path) {
             F.path = path.join(compiler.options.output.path, file);
@@ -86,8 +87,9 @@ Plugin.prototype.apply = function(compiler) {
 Plugin.prototype.writeOutput = function(compiler, contents) {
   var outputDir = this.options.path || '.';
   var outputFilename = path.join(outputDir, this.options.filename || DEFAULT_OUTPUT_FILENAME);
-  if (compiler.options.output.publicPath) {
-    contents.publicPath = compiler.options.output.publicPath;
+  var publicPath = this.options.publicPath || compiler.options.output.publicPath;
+  if (publicPath) {
+    contents.publicPath = publicPath;
   }
   mkdirp.sync(path.dirname(outputFilename));
 

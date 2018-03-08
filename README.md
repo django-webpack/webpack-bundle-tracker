@@ -19,17 +19,17 @@ npm install --save-dev webpack-bundle-tracker
 ```javascript
 var BundleTracker  = require('webpack-bundle-tracker');
 module.exports = {
-        context: __dirname,
+    context: __dirname,
     entry: {
       app: ['./app']
     },
-    
+
     output: {
         path: require("path").resolve('./assets/bundles/'),
         filename: "[name]-[hash].js",
         publicPath: 'http://localhost:3000/assets/bundles/',
     },
-    
+
     plugins: [
       new BundleTracker({path: __dirname, filename: './assets/webpack-stats.json'})
     ]
@@ -67,7 +67,7 @@ And errors will look like,
 {
   "status": "error",
   "file": "/path/to/file/that/caused/the/error",
-  "error": "ErrorName", 
+  "error": "ErrorName",
   "message": "ErrorMessage"
 }
 ```
@@ -98,3 +98,12 @@ By default, the output JSON will not be indented. To increase readability, you c
 option to make the output legible. By default it is off. The value that is set here will be directly
 passed to the `space` parameter in `JSON.stringify`. More information can be found here:
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+
+<br>
+
+#### Bundle Tracker Options
+
+* `filename` - Name of the bundle tracker JSON file.
+* `logTime` - Optional boolean property to output `startTime` and `endTime` in bundle tracker file.
+* `path` - Optional bundle tracker output path.
+* `publicPath` - Optional property to override `output.publicPath`.
