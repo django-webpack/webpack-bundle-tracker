@@ -21,8 +21,8 @@ function Plugin(options) {
 Plugin.prototype.apply = function(compiler) {
     var self = this;
 
-    compiler.plugin('compilation', function(compilation, callback) {
-      compilation.plugin('failed-module', function(fail){
+    const _compilation = function(compilation, callback) {
+      const failedModule = function(fail){
         var output = {
           status: 'error',
           error: fail.error.name || 'unknown-error'
@@ -36,14 +36,21 @@ Plugin.prototype.apply = function(compiler) {
           output.message = '';
         }
         self.writeOutput(compiler, output);
-      });
-    });
+      };
 
-    compiler.plugin('compile', function(factory, callback) {
+      if (compilation.hooks){
+        const plugin = {name: 'BundleTrackerPlugin'};
+        compilation.hooks.failedModule.tap(plugin, failedModule);
+      } else {
+        compilation.plugin('failed-module', failedModule);
+      }
+    };
+
+    const compile = function(factory, callback) {
       self.writeOutput(compiler, {status: 'compiling'});
-    });
+    };
 
-    compiler.plugin('done', function(stats){
+    const done = function(stats) {
       if (stats.compilation.errors.length > 0) {
         var error = stats.compilation.errors[0];
         self.writeOutput(compiler, {
@@ -80,7 +87,18 @@ Plugin.prototype.apply = function(compiler) {
       }
 
       self.writeOutput(compiler, output);
-    });
+    };
+
+    if (compiler.hooks) {
+      const plugin = {name: 'BundleTrackerPlugin'};
+      compiler.hooks.compilation.tap(plugin, _compilation);
+      compiler.hooks.compile.tap(plugin, compile);
+      compiler.hooks.done.tap(plugin, done);
+    } else {
+      compiler.plugin('compilation', compilation);
+      compiler.plugin('compile', compile);
+      compiler.plugin('done', done);
+    }
 };
 
 
