@@ -95,7 +95,7 @@ Plugin.prototype.apply = function(compiler) {
       compiler.hooks.compile.tap(plugin, compile);
       compiler.hooks.done.tap(plugin, done);
     } else {
-      compiler.plugin('compilation', compilation);
+      compiler.plugin('compilation', _compilation);
       compiler.plugin('compile', compile);
       compiler.plugin('done', done);
     }
