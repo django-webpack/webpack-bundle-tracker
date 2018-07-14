@@ -28,8 +28,8 @@
     "url": "https://github.com/owais/webpack-bundle-tracker/issues"
   },
   "dependencies": {
-    "deep-extend": "^0.5.1",
+    "deep-extend": "^0.6.0",
     "mkdirp": "^0.5.1",
-    "strip-ansi": "^2.0.1"
+    "strip-ansi": "^4.0.0"
   }
 }
