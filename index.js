@@ -76,9 +76,21 @@ Plugin.prototype.apply = function(compiler) {
         });
         chunks[chunk.name] = files;
       });
+
+      var entries = {};
+      stats.compilation.chunkGroups.forEach(function (chunkGroup) {
+        var files = chunkGroup.getFiles().map(function (file) {
+          if (compiler.options.output.path) {
+            return path.join(compiler.options.output.path, file);
+          }
+          return file;
+        })
+        entries[chunkGroup.name] = files;
+      });
       var output = {
         status: 'done',
-        chunks: chunks
+        chunks: chunks,
+        entries: entries
       };
 
       if (self.options.logTime === true) {
