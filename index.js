@@ -77,31 +77,20 @@ Plugin.prototype.apply = function(compiler) {
         chunks[chunk.name] = files;
       });
 
-      var entrypoints = {};
-      if (stats.compilation.entrypoints) {
-        stats.compilation.entrypoints.forEach(function (entrypoint) {
-          var files = [];
-          entrypoint.chunks.forEach(function (chunk) {
-            files = files.concat(files, chunk.files.map(function (file) {
-              var A = {name: file};
-              var publicPath = self.options.publicPath || compiler.options.output.publicPath;
-              if (publicPath) {
-                A.publicPath = publicPath + file;
-              }
-              if (compiler.options.output.path) {
-                A.path = path.join(compiler.options.output.path, file);
-              }
-              return A;
-            }));
-          });
-          entrypoints[entrypoint.options.name] = files;
-        });
-      }
-
+      var entries = {};
+      stats.compilation.chunkGroups.forEach(function (chunkGroup) {
+        var files = chunkGroup.getFiles().map(function (file) {
+          if (compiler.options.output.path) {
+            return path.join(compiler.options.output.path, file);
+          }
+          return file;
+        })
+        entries[chunkGroup.name] = files;
+      });
       var output = {
         status: 'done',
         chunks: chunks,
-        entrypoints: entrypoints
+        entries: entries
       };
 
       if (self.options.logTime === true) {
