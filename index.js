@@ -61,6 +61,8 @@ Plugin.prototype.apply = function(compiler) {
         return;
       }
 
+      production = stats.compilation.options.mode === "production";
+
       var chunks = {};
       stats.compilation.chunks.map(function(chunk){
         var files = chunk.files.map(function(file){
@@ -76,9 +78,34 @@ Plugin.prototype.apply = function(compiler) {
         });
         chunks[chunk.name] = files;
       });
+
+      var entryPoints = {};
+      stats.compilation.entrypoints.forEach(function(value, entrypoint) {
+      entrypointsChunks = value.chunks.map(function(chunk) {
+        var renderedHashToAppend = '-' + chunk.renderedHash;
+        var chunkName = chunk.name;
+        if (production) {
+          chunkName += renderedHashToAppend;
+        }
+        chunkName += '.js';
+        var C = { name: chunkName };
+        var publicPath =
+          self.options.publicPath || compiler.options.output.publicPath;
+        if (publicPath) {
+          C.publicPath = publicPath + chunkName;
+        }
+        if (compiler.options.output.path) {
+          C.path = path.join(compiler.options.output.path, chunkName);
+        }
+        return C;
+      });
+      entryPoints[entrypoint] = entrypointsChunks;
+    });
+
       var output = {
         status: 'done',
-        chunks: chunks
+        chunks: chunks,
+        entryPoints: entryPoints
       };
 
       if (self.options.logTime === true) {
