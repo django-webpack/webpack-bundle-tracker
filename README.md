@@ -59,16 +59,20 @@ module.exports = {
   },
   "entryPoints": {
     "main": [
-      {
+      [
+        {
         "name": "app-0828904584990b611fb8.js",
         "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
         "path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
-      },
-      {
+        }
+      ],
+      [
+        {
         "name": "runtime-58e2b6c82f0f9e50524c.js",
         "publicPath": "http://localhost:3000/assets/bundles/runtime-58e2b6c82f0f9e50524c.js",
         "path": "/home/user/project-root/assets/bundles/runtime-58e2b6c82f0f9e50524c.js"
-      }
+        }
+      ]
     ]
   }
 }
