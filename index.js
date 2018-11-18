@@ -77,31 +77,33 @@ Plugin.prototype.apply = function(compiler) {
         chunks[chunk.name] = files;
       });
 
-      var entryPoints = {};
-      stats.compilation.entrypoints.forEach(function(value, entrypoint) {
-      entrypointsChunks = value.chunks.map(function(chunk) {
-        var files = chunk.files.map(function(file){
-          var F = {name: file};
-          var publicPath = self.options.publicPath || compiler.options.output.publicPath;
-          if (publicPath) {
-            F.publicPath = publicPath + file;
-          }
-          if (compiler.options.output.path) {
-            F.path = path.join(compiler.options.output.path, file);
-          }
-          return F; 
-        });
-        return files;
-      });
-      entryPoints[entrypoint] = entrypointsChunks;
-    });
-
       var output = {
         status: 'done',
-        chunks: chunks,
-        entryPoints: entryPoints
+        chunks: chunks
       };
 
+      if (stats.compilation.entrypoints){
+        var entryPoints = {};
+        stats.compilation.entrypoints.forEach(function(value, entrypoint) {
+        entrypointsChunks = value.chunks.map(function(chunk) {
+          var files = chunk.files.map(function(file){
+            var F = {name: file};
+            var publicPath = self.options.publicPath || compiler.options.output.publicPath;
+            if (publicPath) {
+              F.publicPath = publicPath + file;
+            }
+            if (compiler.options.output.path) {
+              F.path = path.join(compiler.options.output.path, file);
+            }
+            return F; 
+            });
+          return files;
+          });
+        entryPoints[entrypoint] = entrypointsChunks;
+        });
+      output['entryPoints'] = entryPoints
+      }
+      
       if (self.options.logTime === true) {
         output.startTime = stats.startTime;
         output.endTime = stats.endTime;
