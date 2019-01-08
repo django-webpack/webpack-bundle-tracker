@@ -3,10 +3,12 @@ var fs = require('fs');
 var stripAnsi = require('strip-ansi');
 var mkdirp = require('mkdirp');
 var extend = require('deep-extend');
+var crypto = require('crypto');
 
 var assets = {};
 var DEFAULT_OUTPUT_FILENAME = 'webpack-stats.json';
 var DEFAULT_LOG_TIME = false;
+var DEFAULT_SRI_HASH_ALGO = 'sha384';
 
 
 function Plugin(options) {
@@ -15,6 +17,9 @@ function Plugin(options) {
   this.options.filename = this.options.filename || DEFAULT_OUTPUT_FILENAME;
   if (this.options.logTime === undefined) {
     this.options.logTime = DEFAULT_LOG_TIME;
+  }
+  if (this.options.sriHashAlgorithm === undefined) {
+    this.options.sriHashAlgorithm = DEFAULT_SRI_HASH_ALGO;
   }
 }
 
@@ -46,6 +51,14 @@ Plugin.prototype.apply = function(compiler) {
       }
     };
 
+    const _getSRIHash = function(filePath) {
+      const contents = fs.readFileSync(filePath)
+      const hash = crypto.createHash(self.options.sriHashAlgorithm)
+                         .update(contents)
+                         .digest('base64');
+      return self.options.sriHashAlgorithm + '-' + hash;
+    };
+
     const compile = function(factory, callback) {
       self.writeOutput(compiler, {status: 'compiling'});
     };
@@ -71,6 +84,7 @@ Plugin.prototype.apply = function(compiler) {
           }
           if (compiler.options.output.path) {
             F.path = path.join(compiler.options.output.path, file);
+            F.sriHash = _getSRIHash(F.path)
           }
           return F;
         });

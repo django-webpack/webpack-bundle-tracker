@@ -45,7 +45,8 @@ module.exports = {
    "app":[{
       "name":"app-0828904584990b611fb8.js",
       "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
-      "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
+      "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js",
+      "sriHash":"sha512-7mTf5s2FNwVU//8WFetpi43RebQCY1+p3IACm0WmaQhSMO+uzDPBKVwJ/MvXX5aiesTrc0T8ne9KigdqJYqp/A=="
     }]
   }
 }
@@ -84,7 +85,8 @@ And in case `logTime` option is set to `true`, the output will look like,
    "app":[{
       "name":"app-0828904584990b611fb8.js",
       "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
-      "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
+      "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js",
+      "sriHash":"sha512-7mTf5s2FNwVU//8WFetpi43RebQCY1+p3IACm0WmaQhSMO+uzDPBKVwJ/MvXX5aiesTrc0T8ne9KigdqJYqp/A=="
     }]
   },
   "startTime":1440535322138,
@@ -107,3 +109,4 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 * `logTime` - Optional boolean property to output `startTime` and `endTime` in bundle tracker file.
 * `path` - Optional bundle tracker output path.
 * `publicPath` - Optional property to override `output.publicPath`.
+* `sriHashAlgorithm` - Optional algorithm to use when calculating sub-resource integrity hashes. Valid options: `sha256`, `sha384`, or `sha512`. Defaults to `sha384`.
