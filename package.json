@@ -1,35 +1,64 @@
 {
   "name": "webpack-bundle-tracker",
-  "version": "0.4.2-beta",
+  "version": "0.5.0-alpha",
+  "author": "Owais Lone",
   "description": "Spits out some stats about webpack compilation process to a file",
   "license": "MIT",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "homepage": "https://github.com/owais/webpack-bundle-tracker",
   "repository": {
     "type": "git",
     "url": "https://github.com/owais/webpack-bundle-tracker.git"
   },
-  "keywords": [
-    "webpack",
-    "bundle",
-    "stats",
-    "files"
-  ],
-  "author": "Owais Lone",
   "licenses": [
     {
       "type": "MIT",
       "url": "https://github.com/brentertz/scapegoat/blob/master/LICENSE-MIT"
     }
   ],
+  "keywords": [
+    "webpack",
+    "bundle",
+    "stats",
+    "files"
+  ],
   "bugs": {
     "url": "https://github.com/owais/webpack-bundle-tracker/issues"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "!test/"
+  ],
+  "scripts": {
+    "test": "jest --runInBand --env node",
+    "test-watch": "jest --runInBand --env node --watchAll",
+    "travis": "yarn pretty-lint && jest --runInBand --coverage --env node && codecov",
+    "pretty-lint": "prettier --check lib/*.js tests/*.js",
+    "pretty": "prettier --loglevel warn --write lib/*.js tests/*.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      ".+\\.test.js$": "babel-jest"
+    },
+    "watchPathIgnorePatterns": [
+      "<rootDir>/dist",
+      "<rootDir>/node_modules"
+    ]
   },
   "dependencies": {
     "deep-extend": "^0.6.0",
     "mkdirp": "^0.5.1",
-    "strip-ansi": "^2.0.1"
+    "strip-ansi": "^5.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-jest": "^24.8.0",
+    "codecov": "^3.5.0",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "rimraf": "^2.6.3"
   }
 }

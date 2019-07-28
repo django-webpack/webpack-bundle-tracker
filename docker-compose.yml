@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+  lts-webpack1:
+    build:
+      context: .
+      args:
+        NODE_VERSION: "lts"
+        WEBPACK_VERSION: "1"
+  lts-webpack2:
+    build:
+      context: .
+      args:
+        NODE_VERSION: "lts"
+        WEBPACK_VERSION: "2"
+  lts-webpack3:
+    build:
+      context: .
+      args:
+        NODE_VERSION: "lts"
+        WEBPACK_VERSION: "3"
+  lts-webpack4:
+    build:
+      context: .
+      args:
+        NODE_VERSION: "lts"
+        WEBPACK_VERSION: "4"
+  current-webpack1:
+    build:
+      context: .
+      args:
+        NODE_VERSION: "current"
+        WEBPACK_VERSION: "1"
+  current-webpack2:
+    build:
+      context: .
+      args:
+        NODE_VERSION: "current"
+        WEBPACK_VERSION: "2"
+  current-webpack3:
+    build:
+      context: .
+      args:
+        NODE_VERSION: "current"
+        WEBPACK_VERSION: "3"
+  current-webpack4:
+    build:
+      context: .
+      args:
+        NODE_VERSION: "current"
+        WEBPACK_VERSION: "4"
+

@@ -1,0 +1,15 @@
+{
+	"sourceMap": "inline",
+	"inputSourceMap": true,
+	"retainLines": true,
+	"presets": [
+		[
+			"@babel/preset-env",
+			{
+				"targets": {
+					"node": "current"
+				}
+			}
+		]
+	]
+}
