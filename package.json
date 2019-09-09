@@ -2,34 +2,42 @@
   "name": "webpack-bundle-tracker",
   "version": "0.4.2-beta",
   "description": "Spits out some stats about webpack compilation process to a file",
-  "license": "MIT",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/owais/webpack-bundle-tracker.git"
-  },
   "keywords": [
-    "webpack",
     "bundle",
+    "files",
+    "plugin",
     "stats",
-    "files"
+    "webpack"
   ],
+  "homepage": "https://github.com/owais/webpack-bundle-tracker",
+  "bugs": "https://github.com/owais/webpack-bundle-tracker/issues",
+  "repository": "https://github.com/owais/webpack-bundle-tracker.git",
+  "license": "MIT",
   "author": "Owais Lone",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/brentertz/scapegoat/blob/master/LICENSE-MIT"
-    }
-  ],
-  "bugs": {
-    "url": "https://github.com/owais/webpack-bundle-tracker/issues"
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "pretest": "prettier --check lib/*.js",
+    "posttest": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "deep-extend": "^0.6.0",
     "mkdirp": "^0.5.1",
-    "strip-ansi": "^2.0.1"
+    "strip-ansi": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/deep-extend": "^0.4.31",
+    "@types/mkdirp": "^0.5.2",
+    "@types/node": "^12.6.9",
+    "@types/webpack": "^4.32.1",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
+    "eslint": "^6.1.0",
+    "prettier": "^1.18.2",
+    "standard-version": "^7.0.0",
+    "typescript": "^3.5.3"
   }
 }
