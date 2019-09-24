@@ -17,9 +17,16 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "pretest": "prettier --check lib/*.js",
+    "pretty": "prettier --loglevel warn --write lib/*.js tests/*.js",
+    "pretty-lint": "prettier --check lib/*.js tests/*.js",
+    "pretest": "yarn pretty-lint",
+    "test": "jest --runInBand --env node",
     "posttest": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test-watch": "jest --runInBand --env node --watchAll",
+    "travis": "yarn pretest && jest --runInBand --coverage --env node && codecov && yarn posttest"
+  },
+  "jest": {
+    "setupFilesAfterEnv": ["jest-extended"]
   },
   "dependencies": {
     "deep-extend": "^0.6.0",
@@ -33,9 +40,12 @@
     "@types/webpack": "^4.32.1",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
+    "codecov": "^3.5.0",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "eslint": "^6.1.0",
+    "jest": "^24.8.0",
+    "jest-extended": "^0.11.2",
     "prettier": "^1.18.2",
     "standard-version": "^7.0.0",
     "typescript": "^3.5.3"
