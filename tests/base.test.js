@@ -232,4 +232,43 @@ describe('BundleTrackerPlugin bases tests', () => {
       expectWarnings,
     );
   });
+
+  it('It should set relative path when option is set', done => {
+    const expectErrors = null;
+    let expectWarnings = getWebpack4WarningMessage();
+
+    testPlugin(
+      {
+        context: __dirname,
+        entry: path.resolve(__dirname, 'fixtures', 'index.js'),
+        output: {
+          path: path.join(OUTPUT_DIR, 'js'),
+          filename: '[name]-[hash].js',
+          publicPath: 'http://localhost:3000/assets/bundles/',
+        },
+        plugins: [
+          new BundleTrackerPlugin({
+            path: OUTPUT_DIR,
+            relativePath: true
+          }),
+        ],
+      },
+      {
+        status: 'done',
+        chunks: {
+          main: [
+            {
+              name: expect.stringMatching(/^main-[a-z0-9]+.js$/),
+              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/main-[a-z0-9]+.js$/),
+              path: expect.stringMatching(/^js(\/||\\)main-[a-z0-9]+.js$/),
+            },
+          ],
+        },
+      },
+      'webpack-stats.json',
+      done,
+      expectErrors,
+      expectWarnings,
+    );
+  });
 });

@@ -19,25 +19,25 @@ yarn add --dev webpack-bundle-tracker
 ## Usage
 
 ```javascript
-var BundleTracker = require("webpack-bundle-tracker");
+var BundleTracker = require('webpack-bundle-tracker');
 module.exports = {
-	context: __dirname,
-	entry: {
-		app: ["./app"]
-	},
+  context: __dirname,
+  entry: {
+    app: ['./app'],
+  },
 
-	output: {
-		path: require("path").resolve("./assets/bundles/"),
-		filename: "[name]-[hash].js",
-		publicPath: "http://localhost:3000/assets/bundles/"
-	},
+  output: {
+    path: require('path').resolve('./assets/bundles/'),
+    filename: '[name]-[hash].js',
+    publicPath: 'http://localhost:3000/assets/bundles/',
+  },
 
-	plugins: [
-		new BundleTracker({
-			path: __dirname,
-			filename: "./assets/webpack-stats.json"
-		})
-	]
+  plugins: [
+    new BundleTracker({
+      path: __dirname,
+      filename: './assets/webpack-stats.json',
+    }),
+  ],
 };
 ```
 
@@ -45,16 +45,16 @@ module.exports = {
 
 ```json
 {
-	"status": "done",
-	"chunks": {
-		"app": [
-			{
-				"name": "app-0828904584990b611fb8.js",
-				"publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
-				"path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
-			}
-		]
-	}
+  "status": "done",
+  "chunks": {
+    "app": [
+      {
+        "name": "app-0828904584990b611fb8.js",
+        "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+        "path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
+      }
+    ]
+  }
 }
 ```
 
@@ -62,7 +62,7 @@ In case webpack is still compiling, it'll look like,
 
 ```json
 {
-	"status": "compiling"
+  "status": "compiling"
 }
 ```
 
@@ -70,10 +70,10 @@ And errors will look like,
 
 ```json
 {
-	"status": "error",
-	"file": "/path/to/file/that/caused/the/error",
-	"error": "ErrorName",
-	"message": "ErrorMessage"
+  "status": "error",
+  "file": "/path/to/file/that/caused/the/error",
+  "error": "ErrorName",
+  "message": "ErrorMessage"
 }
 ```
 
@@ -81,18 +81,37 @@ And errors will look like,
 
 And in case `logTime` option is set to `true`, the output will look like,
 
-```
+```json
 {
-  "status":"done",
-  "chunks":{
-   "app":[{
-      "name":"app-0828904584990b611fb8.js",
-      "publicPath":"http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
-      "path":"/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
-    }]
+  "status": "done",
+  "chunks": {
+    "app": [
+      {
+        "name": "app-0828904584990b611fb8.js",
+        "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+        "path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
+      }
+    ]
   },
-  "startTime":1440535322138,
-  "endTime":1440535326804
+  "startTime": 1440535322138,
+  "endTime": 1440535326804
+}
+```
+
+And in case `relativePath` option is set to `true`, the output will look like,
+
+```json
+{
+  "status": "done",
+  "chunks": {
+    "app": [
+      {
+        "name": "app-0828904584990b611fb8.js",
+        "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+        "path": "bundles/app-0828904584990b611fb8.js"
+      }
+    ]
+  },
 }
 ```
 
@@ -100,14 +119,14 @@ By default, the output JSON will not be indented. To increase readability, you c
 option to make the output legible. By default it is off. The value that is set here will be directly
 passed to the `space` parameter in `JSON.stringify`. More information can be found [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
 
-
 <br>
 
 ## Options
 
-| Name         | Type        | Default                | Description                                                              |
-| ------------ | ----------- | ---------------------- | ------------------------------------------------------------------------ |
-| `path`       | `{String}`  | `'.'`                  | Output directory of bundle tracker JSON file .                           |
-| `filename`   | `{String}`  | `'webpack-stats.json'` | Name of the bundle tracker JSON file.                                    |
-| `publicPath` | `{String}`  | `?`                    | Override `output.publicPath` from Webpack config.                        |
-| `logTime`    | `{Boolean}` | `false`                | Output `startTime` and `endTime` properties in bundle tracker JSON file. |
+| Name           | Type        | Default                | Description                                                                                                                   |
+| -------------- | ----------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `path`         | `{String}`  | `'.'`                  | Output directory of bundle tracker JSON file .                                                                                |
+| `filename`     | `{String}`  | `'webpack-stats.json'` | Name of the bundle tracker JSON file.                                                                                         |
+| `publicPath`   | `{String}`  | `?`                    | Override `output.publicPath` from Webpack config.                                                                             |
+| `relativePath` | `{Boolean}` | `?`                    | Show relative path instead of absolute path for bundles in JSON Tracker file. Path are relative from path of JSON Tracker file. |
+| `logTime`      | `{Boolean}` | `false`                | Output `startTime` and `endTime` properties in bundle tracker JSON file.                                                      |
