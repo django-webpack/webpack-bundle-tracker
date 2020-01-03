@@ -12,12 +12,12 @@ declare namespace BundleTrackerPlugin {
      * Output directory of the bundle tracker JSON file
      * Default: `'.'`
      */
-    path: string;
+    path?: string;
     /**
      * Name of the bundle tracker JSON file.
      * Default: `'webpack-stats.json'`
      */
-    filename: string;
+    filename?: string;
     /**
      * Property to override default `output.publicPath` from Webpack config file.
      */
@@ -38,13 +38,14 @@ declare namespace BundleTrackerPlugin {
     indent?: number;
     /**
      * Enable subresources integrity
+     * Default: `false`
      */
-    integrity: boolean;
+    integrity?: boolean;
     /**
      * Set subresources integrity hashes
      * Default: `[ 'sha256', 'sha384', 'sha512' ]`
      */
-    integrityHashes: string[];
+    integrityHashes?: string[];
   }
   interface Contents {
     /**
