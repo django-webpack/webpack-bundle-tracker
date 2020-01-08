@@ -2,6 +2,8 @@
 
 const common = require('./commons');
 
+require('./assets/css/test.css')
+
 require(["./shared"], function(shared) {
-	shared("This is app 1");
+	shared("This is app 2");
 });

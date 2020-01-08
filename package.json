@@ -15,39 +15,51 @@
   "license": "MIT",
   "author": "Owais Lone",
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "typings.d.ts",
   "scripts": {
     "pretty": "prettier --loglevel warn --write lib/*.js tests/*.js",
     "pretty-lint": "prettier --check lib/*.js tests/*.js",
     "pretest": "yarn pretty-lint",
     "test": "jest --runInBand --env node",
+    "test-debug": "node --inspect-brk=0.0.0.0 node_modules/jest/bin/jest --runInBand --env node",
     "posttest": "tsc",
     "test-watch": "jest --runInBand --env node --watchAll",
     "travis": "yarn pretest && jest --runInBand --coverage --env node && codecov && yarn posttest"
   },
   "jest": {
-    "setupFilesAfterEnv": ["jest-extended"]
+    "setupFilesAfterEnv": [
+      "jest-extended"
+    ]
   },
   "dependencies": {
-    "deep-extend": "^0.6.0",
-    "mkdirp": "^0.5.1",
-    "strip-ansi": "^5.2.0"
+    "@types/lodash.get": "^4.4.6",
+    "lodash.assign": "^4.2.0",
+    "lodash.defaults": "^4.2.0",
+    "lodash.get": "^4.4.2",
+    "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
-    "@types/deep-extend": "^0.4.31",
+    "@types/lodash.assign": "^4.2.6",
+    "@types/lodash.defaults": "^4.2.6",
     "@types/mkdirp": "^0.5.2",
-    "@types/node": "^12.6.9",
-    "@types/webpack": "^4.32.1",
-    "@typescript-eslint/eslint-plugin": "^1.13.0",
-    "@typescript-eslint/parser": "^1.13.0",
-    "codecov": "^3.5.0",
+    "@types/node": "^12.12.14",
+    "@types/webpack": "^4.41.0",
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
+    "codecov": "^3.6.1",
     "commitizen": "^4.0.3",
+    "css-loader": "^3.4.0",
     "cz-conventional-changelog": "^3.0.2",
-    "eslint": "^6.1.0",
-    "jest": "^24.8.0",
+    "eslint": "^6.7.2",
+    "file-loader": "^5.0.2",
+    "jest": "^24.9.0",
     "jest-extended": "^0.11.2",
-    "prettier": "^1.18.2",
-    "standard-version": "^7.0.0",
-    "typescript": "^3.5.3"
+    "mini-css-extract-plugin": "^0.9.0",
+    "prettier": "^1.19.1",
+    "standard-version": "^7.0.1",
+    "style-loader": "^1.1.1",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.3",
+    "webpack": "^4.41.4"
   }
 }
