@@ -1,11 +1,13 @@
 /* eslint-env jest */
 'use strict';
 
+const zlib = require('zlib');
 const path = require('path');
 const rimraf = require('rimraf');
 
 const { OUTPUT_DIR, testPlugin, getWebpack4WarningMessage } = require('./utils.js');
 
+const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BundleTrackerPlugin = require('../lib/index.js');
 
@@ -28,8 +30,8 @@ describe('BundleTrackerPlugin bases tests', () => {
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
         output: {
           path: OUTPUT_DIR,
-          filename: '[name]-[hash].js',
-          publicPath: 'http://localhost:3000/assets/bundles/',
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
         },
         plugins: [
           new BundleTrackerPlugin({
@@ -39,15 +41,16 @@ describe('BundleTrackerPlugin bases tests', () => {
       },
       {
         status: 'done',
-        publicPath: 'http://localhost:3000/assets/bundles/',
+        publicPath: 'http://localhost:3000/assets/',
         chunks: {
-          main: [
-            {
-              name: expect.stringMatching(/^main-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/main-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/wbt-tests-\w{6}(\/||\\)main-[a-z0-9]+.js$/),
-            },
-          ],
+          main: ['js/main.js'],
+        },
+        assets: {
+          'js/main.js': {
+            name: 'js/main.js',
+            path: OUTPUT_DIR + '/js/main.js',
+            publicPath: 'http://localhost:3000/assets/js/main.js',
+          },
         },
       },
       'webpack-stats.json',
@@ -67,8 +70,8 @@ describe('BundleTrackerPlugin bases tests', () => {
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
         output: {
           path: OUTPUT_DIR,
-          filename: '[name]-[hash].js',
-          publicPath: 'http://localhost:3000/assets/bundles/',
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
         },
         plugins: [
           new BundleTrackerPlugin({
@@ -99,8 +102,8 @@ describe('BundleTrackerPlugin bases tests', () => {
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
         output: {
           path: OUTPUT_DIR,
-          filename: '[name]-[hash].js',
-          publicPath: 'http://localhost:3000/assets/bundles/',
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
         },
         plugins: [
           new BundleTrackerPlugin({
@@ -114,11 +117,14 @@ describe('BundleTrackerPlugin bases tests', () => {
         publicPath: 'https://test.org/statics/',
         status: 'done',
         chunks: {
-          main: [
-            {
-              publicPath: expect.stringMatching(/^https:\/\/test.org\/statics\/main-[a-z0-9]+.js$/),
-            },
-          ],
+          main: ['js/main.js'],
+        },
+        assets: {
+          'js/main.js': {
+            name: 'js/main.js',
+            path: OUTPUT_DIR + '/js/main.js',
+            publicPath: 'https://test.org/statics/js/main.js',
+          },
         },
       },
       'webpack-stats.json',
@@ -140,8 +146,8 @@ describe('BundleTrackerPlugin bases tests', () => {
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
         output: {
           path: OUTPUT_DIR,
-          filename: '[name]-[hash].js',
-          publicPath: 'http://localhost:3000/assets/bundles/',
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
         },
         plugins: [
           new BundleTrackerPlugin({
@@ -153,7 +159,14 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
-          main: expect.not.toBeEmpty(),
+          main: ['js/main.js'],
+        },
+        assets: {
+          'js/main.js': {
+            name: 'js/main.js',
+            path: OUTPUT_DIR + '/js/main.js',
+            publicPath: 'http://localhost:3000/assets/js/main.js',
+          },
         },
       },
       filename,
@@ -175,8 +188,8 @@ describe('BundleTrackerPlugin bases tests', () => {
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
         output: {
           path: OUTPUT_DIR,
-          filename: '[name]-[hash].js',
-          publicPath: 'http://localhost:3000/assets/bundles/',
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
         },
         plugins: [
           new BundleTrackerPlugin({
@@ -188,7 +201,14 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
-          main: expect.not.toBeEmpty(),
+          main: ['js/main.js'],
+        },
+        assets: {
+          'js/main.js': {
+            name: 'js/main.js',
+            path: OUTPUT_DIR + '/js/main.js',
+            publicPath: 'http://localhost:3000/assets/js/main.js',
+          },
         },
       },
       filename,
@@ -210,8 +230,8 @@ describe('BundleTrackerPlugin bases tests', () => {
         entry: path.resolve(__dirname, 'fixtures', 'index-fail.js'),
         output: {
           path: OUTPUT_DIR,
-          filename: '[name]-[hash].js',
-          publicPath: 'http://localhost:3000/assets/bundles/',
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
         },
         plugins: [
           new BundleTrackerPlugin({
@@ -244,8 +264,8 @@ describe('BundleTrackerPlugin bases tests', () => {
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
         output: {
           path: path.join(OUTPUT_DIR, 'js'),
-          filename: '[name]-[hash].js',
-          publicPath: 'http://localhost:3000/assets/bundles/',
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
         },
         plugins: [
           new BundleTrackerPlugin({
@@ -257,13 +277,14 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
-          main: [
-            {
-              name: expect.stringMatching(/^main-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/main-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)main-[a-z0-9]+.js$/),
-            },
-          ],
+          main: ['js/main.js'],
+        },
+        assets: {
+          'js/main.js': {
+            name: 'js/main.js',
+            path: 'js/main.js',
+            publicPath: 'http://localhost:3000/assets/js/main.js',
+          },
         },
       },
       'webpack-stats.json',
@@ -286,8 +307,8 @@ describe('BundleTrackerPlugin bases tests', () => {
         },
         output: {
           path: path.join(OUTPUT_DIR, 'js'),
-          filename: '[name]-[hash].js',
-          publicPath: 'http://localhost:3000/assets/bundles/',
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
         },
         optimization: {
           splitChunks: {
@@ -324,40 +345,35 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
-          app1: [
-            {
-              name: expect.stringMatching(/^vendors-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/vendors-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)vendors-[a-z0-9]+.js$/),
-            },
-            {
-              name: expect.stringMatching(/^commons-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/commons-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)commons-[a-z0-9]+.js$/),
-            },
-            {
-              name: expect.stringMatching(/^app1-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/app1-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)app1-[a-z0-9]+.js$/),
-            },
-          ],
-          app2: [
-            {
-              name: expect.stringMatching(/^vendors-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/vendors-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)vendors-[a-z0-9]+.js$/),
-            },
-            {
-              name: expect.stringMatching(/^commons-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/commons-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)commons-[a-z0-9]+.js$/),
-            },
-            {
-              name: expect.stringMatching(/^app2-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/app2-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)app2-[a-z0-9]+.js$/),
-            },
-          ],
+          app1: ['js/vendors.js', 'js/commons.js', 'js/app1.js'],
+          app2: ['js/vendors.js', 'js/commons.js', 'js/app2.js'],
+        },
+        assets: {
+          'js/2.js': {
+            name: 'js/2.js',
+            path: 'js/2.js',
+            publicPath: 'http://localhost:3000/assets/js/2.js',
+          },
+          'js/app1.js': {
+            name: 'js/app1.js',
+            path: 'js/app1.js',
+            publicPath: 'http://localhost:3000/assets/js/app1.js',
+          },
+          'js/app2.js': {
+            name: 'js/app2.js',
+            path: 'js/app2.js',
+            publicPath: 'http://localhost:3000/assets/js/app2.js',
+          },
+          'js/commons.js': {
+            name: 'js/commons.js',
+            path: 'js/commons.js',
+            publicPath: 'http://localhost:3000/assets/js/commons.js',
+          },
+          'js/vendors.js': {
+            name: 'js/vendors.js',
+            path: 'js/vendors.js',
+            publicPath: 'http://localhost:3000/assets/js/vendors.js',
+          },
         },
       },
       'webpack-stats.json',
@@ -380,8 +396,8 @@ describe('BundleTrackerPlugin bases tests', () => {
         },
         output: {
           path: path.join(OUTPUT_DIR, 'js'),
-          filename: '[name]-[hash].js',
-          publicPath: 'http://localhost:3000/assets/bundles/',
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
         },
         module: {
           rules: [{ test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] }],
@@ -411,7 +427,7 @@ describe('BundleTrackerPlugin bases tests', () => {
           },
         },
         plugins: [
-          new MiniCssExtractPlugin({ filename: 'styles-[hash].css' }),
+          new MiniCssExtractPlugin({ filename: 'styles.css' }),
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
             relativePath: true,
@@ -423,54 +439,233 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
+          app1: ['js/vendors.js', 'js/commons.js', 'js/app1.js'],
+          appWithAssets: ['js/vendors.js', 'js/commons.js', 'styles.css', 'js/appWithAssets.js'],
+        },
+        publicPath: 'http://localhost:3000/assets/',
+        assets: {
+          'js/commons.js': {
+            name: 'js/commons.js',
+            path: 'js/commons.js',
+            integrity: expect.stringMatching(/^^sha256-[\w+=/]+ sha384-[\w+=/]+ sha512-[\w+=/]+$/),
+            publicPath: 'http://localhost:3000/assets/js/commons.js',
+          },
+          'js/vendors.js': {
+            name: 'js/vendors.js',
+            path: 'js/vendors.js',
+            integrity: expect.stringMatching(/^^sha256-[\w+=/]+ sha384-[\w+=/]+ sha512-[\w+=/]+$/),
+            publicPath: 'http://localhost:3000/assets/js/vendors.js',
+          },
+          'js/2.js': {
+            name: 'js/2.js',
+            path: 'js/2.js',
+            integrity: expect.stringMatching(/^^sha256-[\w+=/]+ sha384-[\w+=/]+ sha512-[\w+=/]+$/),
+            publicPath: 'http://localhost:3000/assets/js/2.js',
+          },
+          'js/app1.js': {
+            name: 'js/app1.js',
+            path: 'js/app1.js',
+            integrity: expect.stringMatching(/^^sha256-[\w+=/]+ sha384-[\w+=/]+ sha512-[\w+=/]+$/),
+            publicPath: 'http://localhost:3000/assets/js/app1.js',
+          },
+          'styles.css': {
+            name: 'styles.css',
+            path: 'styles.css',
+            integrity: expect.stringMatching(/^^sha256-[\w+=/]+ sha384-[\w+=/]+ sha512-[\w+=/]+$/),
+            publicPath: 'http://localhost:3000/assets/styles.css',
+          },
+          'js/appWithAssets.js': {
+            name: 'js/appWithAssets.js',
+            path: 'js/appWithAssets.js',
+            integrity: expect.stringMatching(/^^sha256-[\w+=/]+ sha384-[\w+=/]+ sha512-[\w+=/]+$/),
+            publicPath: 'http://localhost:3000/assets/js/appWithAssets.js',
+          },
+        },
+      },
+      'webpack-stats.json',
+      done,
+      expectErrors,
+      expectWarnings,
+    );
+  });
+  it('It should show compressed assets', done => {
+    const expectErrors = null;
+    const expectWarnings = getWebpack4WarningMessage();
+
+    testPlugin(
+      {
+        context: __dirname,
+        entry: {
+          app1: path.resolve(__dirname, 'fixtures', 'app1.js'),
+          appWithAssets: path.resolve(__dirname, 'fixtures', 'appWithAssets.js'),
+        },
+        output: {
+          path: OUTPUT_DIR,
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
+        },
+        module: {
+          rules: [{ test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] }],
+        },
+        optimization: {
+          splitChunks: {
+            cacheGroups: {
+              vendors: {
+                name: 'vendors',
+                test: /[\\/]node_modules[\\/]/,
+                priority: -10,
+                chunks: 'initial',
+              },
+              commons: {
+                name: 'commons',
+                test: /[\\/]?commons/,
+                enforce: true,
+                priority: -20,
+                chunks: 'all',
+                reuseExistingChunk: true,
+              },
+              default: {
+                name: 'shared',
+                reuseExistingChunk: true,
+              },
+            },
+          },
+        },
+        plugins: [
+          new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
+          new CompressionPlugin({
+            filename: '[path].gz[query]',
+            test: /\.(js|css)$/,
+            threshold: 1,
+            minRatio: 1, // Compress all files
+            deleteOriginalAssets: false,
+          }),
+          new CompressionPlugin({
+            filename: '[path].br[query]',
+            algorithm: 'brotliCompress',
+            test: /\.(js|css)$/,
+            threshold: 1,
+            minRatio: 1, // Compress all files
+            deleteOriginalAssets: false,
+            compressionOptions: {
+              params: {
+                [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+              },
+            },
+          }),
+          new BundleTrackerPlugin({
+            path: OUTPUT_DIR,
+            relativePath: true,
+            includeParents: true,
+          }),
+        ],
+      },
+      {
+        status: 'done',
+        chunks: {
           app1: [
-            {
-              name: expect.stringMatching(/^vendors-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/vendors-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)vendors-[a-z0-9]+.js$/),
-              integrity: expect.stringMatching(/sha256-\S+ sha384-\S+ sha512-\S+/),
-            },
-            {
-              name: expect.stringMatching(/^commons-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/commons-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)commons-[a-z0-9]+.js$/),
-              integrity: expect.stringMatching(/sha256-\S+ sha384-\S+ sha512-\S+/),
-            },
-            {
-              name: expect.stringMatching(/^app1-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/app1-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)app1-[a-z0-9]+.js$/),
-              integrity: expect.stringMatching(/sha256-\S+ sha384-\S+ sha512-\S+/),
-            },
+            expect.stringMatching(/^js\/vendors.js$/),
+            expect.stringMatching(/^js\/commons.js$/),
+            expect.stringMatching(/^js\/app1.js$/),
           ],
           appWithAssets: [
-            {
-              name: expect.stringMatching(/^vendors-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/vendors-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)vendors-[a-z0-9]+.js$/),
-              integrity: expect.stringMatching(/sha256-\S+ sha384-\S+ sha512-\S+/),
-            },
-            {
-              name: expect.stringMatching(/^commons-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/commons-[a-z0-9]+.js$/),
-              path: expect.stringMatching(/^js(\/||\\)commons-[a-z0-9]+.js$/),
-              integrity: expect.stringMatching(/sha256-\S+ sha384-\S+ sha512-\S+/),
-            },
-            {
-              name: expect.stringMatching(/^styles-[a-z0-9]+.css$/),
-              publicPath: expect.stringMatching(/^http:\/\/localhost:3000\/assets\/bundles\/styles-[a-z0-9]+.css$/),
-              path: expect.stringMatching(/^js(\/||\\)styles-[a-z0-9]+.css$/),
-              integrity: expect.stringMatching(/sha256-\S+ sha384-\S+ sha512-\S+/),
-            },
-            {
-              name: expect.stringMatching(/^appWithAssets-[a-z0-9]+.js$/),
-              publicPath: expect.stringMatching(
-                /^http:\/\/localhost:3000\/assets\/bundles\/appWithAssets-[a-z0-9]+.js$/,
-              ),
-              path: expect.stringMatching(/^js(\/||\\)appWithAssets-[a-z0-9]+.js$/),
-              integrity: expect.stringMatching(/sha256-\S+ sha384-\S+ sha512-\S+/),
-            },
+            expect.stringMatching(/^js\/vendors.js$/),
+            expect.stringMatching(/^js\/commons.js$/),
+            expect.stringMatching(/^css\/appWithAssets.css$/),
+            expect.stringMatching(/^js\/appWithAssets.js$/),
           ],
+        },
+        assets: {
+          'js/commons.js': {
+            name: 'js/commons.js',
+            path: 'js/commons.js',
+            publicPath: 'http://localhost:3000/assets/js/commons.js',
+          },
+          'js/vendors.js': {
+            name: 'js/vendors.js',
+            path: 'js/vendors.js',
+            publicPath: 'http://localhost:3000/assets/js/vendors.js',
+          },
+          'js/2.js': {
+            name: 'js/2.js',
+            path: 'js/2.js',
+            publicPath: 'http://localhost:3000/assets/js/2.js',
+          },
+          'js/app1.js': {
+            name: 'js/app1.js',
+            path: 'js/app1.js',
+            publicPath: 'http://localhost:3000/assets/js/app1.js',
+          },
+          'css/appWithAssets.css': {
+            name: 'css/appWithAssets.css',
+            path: 'css/appWithAssets.css',
+            publicPath: 'http://localhost:3000/assets/css/appWithAssets.css',
+          },
+          'js/appWithAssets.js': {
+            name: 'js/appWithAssets.js',
+            path: 'js/appWithAssets.js',
+            publicPath: 'http://localhost:3000/assets/js/appWithAssets.js',
+          },
+          'js/commons.js.gz': {
+            name: 'js/commons.js.gz',
+            path: 'js/commons.js.gz',
+            publicPath: 'http://localhost:3000/assets/js/commons.js.gz',
+          },
+          'js/vendors.js.gz': {
+            name: 'js/vendors.js.gz',
+            path: 'js/vendors.js.gz',
+            publicPath: 'http://localhost:3000/assets/js/vendors.js.gz',
+          },
+          'js/2.js.gz': {
+            name: 'js/2.js.gz',
+            path: 'js/2.js.gz',
+            publicPath: 'http://localhost:3000/assets/js/2.js.gz',
+          },
+          'js/app1.js.gz': {
+            name: 'js/app1.js.gz',
+            path: 'js/app1.js.gz',
+            publicPath: 'http://localhost:3000/assets/js/app1.js.gz',
+          },
+          'css/appWithAssets.css.gz': {
+            name: 'css/appWithAssets.css.gz',
+            path: 'css/appWithAssets.css.gz',
+            publicPath: 'http://localhost:3000/assets/css/appWithAssets.css.gz',
+          },
+          'js/appWithAssets.js.gz': {
+            name: 'js/appWithAssets.js.gz',
+            path: 'js/appWithAssets.js.gz',
+            publicPath: 'http://localhost:3000/assets/js/appWithAssets.js.gz',
+          },
+          'js/commons.js.br': {
+            name: 'js/commons.js.br',
+            path: 'js/commons.js.br',
+            publicPath: 'http://localhost:3000/assets/js/commons.js.br',
+          },
+          'js/2.js.br': {
+            name: 'js/2.js.br',
+            path: 'js/2.js.br',
+            publicPath: 'http://localhost:3000/assets/js/2.js.br',
+          },
+          'css/appWithAssets.css.br': {
+            name: 'css/appWithAssets.css.br',
+            path: 'css/appWithAssets.css.br',
+            publicPath: 'http://localhost:3000/assets/css/appWithAssets.css.br',
+          },
+          'js/vendors.js.br': {
+            name: 'js/vendors.js.br',
+            path: 'js/vendors.js.br',
+            publicPath: 'http://localhost:3000/assets/js/vendors.js.br',
+          },
+          'js/app1.js.br': {
+            name: 'js/app1.js.br',
+            path: 'js/app1.js.br',
+            publicPath: 'http://localhost:3000/assets/js/app1.js.br',
+          },
+          'js/appWithAssets.js.br': {
+            name: 'js/appWithAssets.js.br',
+            path: 'js/appWithAssets.js.br',
+            publicPath: 'http://localhost:3000/assets/js/appWithAssets.js.br',
+          },
         },
       },
       'webpack-stats.json',
