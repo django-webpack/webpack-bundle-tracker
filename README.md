@@ -47,13 +47,14 @@ module.exports = {
 {
   "status": "done",
   "chunks": {
-    "app": [
-      {
-        "name": "app-0828904584990b611fb8.js",
-        "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
-        "path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
-      }
-    ]
+    "app": ["app-0828904584990b611fb8.js"]
+  },
+  "assets": {
+    "app-0828904584990b611fb8.js": {
+      "name": "app-0828904584990b611fb8.js",
+      "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+      "path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
+    }
   }
 }
 ```
@@ -86,12 +87,15 @@ And in case `logTime` option is set to `true`, the output will look like,
   "status": "done",
   "chunks": {
     "app": [
-      {
-        "name": "app-0828904584990b611fb8.js",
-        "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
-        "path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
-      }
+      "app-0828904584990b611fb8.js"
     ]
+  },
+  "assets": {
+    "app-0828904584990b611fb8.js": {
+      "name": "app-0828904584990b611fb8.js",
+      "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+      "path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
+    }
   },
   "startTime": 1440535322138,
   "endTime": 1440535326804
@@ -104,14 +108,62 @@ And in case `relativePath` option is set to `true`, the output will look like,
 {
   "status": "done",
   "chunks": {
-    "app": [
-      {
-        "name": "app-0828904584990b611fb8.js",
-        "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
-        "path": "bundles/app-0828904584990b611fb8.js"
-      }
-    ]
+    "app": ["app-0828904584990b611fb8.js"]
   },
+  "assets": {
+    "app-0828904584990b611fb8.js": {
+      "name": "app-0828904584990b611fb8.js",
+      "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+      "path": "app-0828904584990b611fb8.js"
+    }
+  }
+}
+```
+
+And in case `integrity` option is set to `true`, the output will look like,
+
+```json
+{
+  "status": "done",
+  "chunks": {
+    "app": ["app-0828904584990b611fb8.js"]
+  },
+  "assets": {
+    "app-0828904584990b611fb8.js": {
+      "name": "app-0828904584990b611fb8.js",
+      "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+      "path": "app-0828904584990b611fb8.js",
+      "integrity": "sha256-yAIefNWsF0IfxalAlLNngdY0t3J1h4IzZLzcJEn/FTM= sha384-QmiRCOdQx6MVC721liFMbJjud6Kr5ryT1vhHI5htzftpzoI1P3IlBqbpg5AHjbBv sha512-kbLjakids0Z2vvrOrtV7s2FUvKcgM3bg0WQwuyGvJPE+zVqOL4t0UvWkeUzz5z2ZrDm0ST/dQjPBJaq7rDB/2Q=="
+    }
+  }
+}
+```
+
+And in case of usage of compression plugin for webpack, the output will look like,
+
+```json
+{
+  "status": "done",
+  "chunks": {
+    "app": ["app-0828904584990b611fb8.js"]
+  },
+  "assets": {
+    "app-0828904584990b611fb8.js": {
+      "name": "app-0828904584990b611fb8.js",
+      "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js",
+      "path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js"
+    },
+    "app-0828904584990b611fb8.js.br": {
+      "name": "app-0828904584990b611fb8.js.br",
+      "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js.br",
+      "path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js.br"
+    },
+    "app-0828904584990b611fb8.js.gz": {
+      "name": "app-0828904584990b611fb8.js.gz",
+      "publicPath": "http://localhost:3000/assets/bundles/app-0828904584990b611fb8.js.gz",
+      "path": "/home/user/project-root/assets/bundles/app-0828904584990b611fb8.js.gz"
+    }
+  }
 }
 ```
 
@@ -123,10 +175,12 @@ passed to the `space` parameter in `JSON.stringify`. More information can be fou
 
 ## Options
 
-| Name           | Type        | Default                | Description                                                                                                                   |
-| -------------- | ----------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `path`         | `{String}`  | `'.'`                  | Output directory of bundle tracker JSON file .                                                                                |
-| `filename`     | `{String}`  | `'webpack-stats.json'` | Name of the bundle tracker JSON file.                                                                                         |
-| `publicPath`   | `{String}`  | `?`                    | Override `output.publicPath` from Webpack config.                                                                             |
-| `relativePath` | `{Boolean}` | `?`                    | Show relative path instead of absolute path for bundles in JSON Tracker file. Path are relative from path of JSON Tracker file. |
-| `logTime`      | `{Boolean}` | `false`                | Output `startTime` and `endTime` properties in bundle tracker JSON file.                                                      |
+| Name              | Type        | Default                          | Description                                                                                                                     |
+| ----------------- | ----------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `path`            | `{String}`  | `'.'`                            | Output directory of bundle tracker JSON file .                                                                                  |
+| `filename`        | `{String}`  | `'webpack-stats.json'`           | Name of the bundle tracker JSON file.                                                                                           |
+| `publicPath`      | `{String}`  | `?`                              | Override `output.publicPath` from Webpack config.                                                                               |
+| `relativePath`    | `{Boolean}` | `?`                              | Show relative path instead of absolute path for bundles in JSON Tracker file. Path are relative from path of JSON Tracker file. |
+| `logTime`         | `{Boolean}` | `false`                          | Output `startTime` and `endTime` properties in bundle tracker JSON file.                                                        |
+| `integrity`       | `{Boolean}` | `false`                          | Output `integrity` property for each asset entry.                                                                               |
+| `integrityHashes` | `{Array}`   | `['sha256', 'sha384', 'sha512']` | Cryptographic hash functions used to compute integrity for each asset.                                                          |
