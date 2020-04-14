@@ -184,3 +184,6 @@ passed to the `space` parameter in `JSON.stringify`. More information can be fou
 | `logTime`         | `{Boolean}` | `false`                          | Output `startTime` and `endTime` properties in bundle tracker JSON file.                                                        |
 | `integrity`       | `{Boolean}` | `false`                          | Output `integrity` property for each asset entry.                                                                               |
 | `integrityHashes` | `{Array}`   | `['sha256', 'sha384', 'sha512']` | Cryptographic hash functions used to compute integrity for each asset.                                                          |
+| `indent` | `{Integer}`   | `?` | Format resulting JSON file for better readability.                                                          |
+
+`?` denotes the option is initially not set.
