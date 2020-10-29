@@ -534,14 +534,14 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
           new CompressionPlugin({
-            filename: '[path].gz[query]',
+            filename: '[path][base].gz[query]',
             test: /\.(js|css)$/,
             threshold: 1,
             minRatio: 1, // Compress all files
             deleteOriginalAssets: false,
           }),
           new CompressionPlugin({
-            filename: '[path].br[query]',
+            filename: '[path][base].br[query]',
             algorithm: 'brotliCompress',
             test: /\.(js|css)$/,
             threshold: 1,
