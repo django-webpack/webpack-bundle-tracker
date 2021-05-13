@@ -10,10 +10,6 @@ Spits out some stats about webpack compilation process to a file.
 npm install --save-dev webpack-bundle-tracker
 ```
 
-```bash
-yarn add --dev webpack-bundle-tracker
-```
-
 <br>
 
 ## Usage

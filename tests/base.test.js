@@ -36,6 +36,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
+            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
           }),
         ],
       },
@@ -76,6 +77,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
+            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
             logTime: true,
           }),
         ],
@@ -108,6 +110,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
+            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
             publicPath: 'https://test.org/statics/',
           }),
         ],
@@ -152,7 +155,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
-            filename: filename,
+            filename: path.join(OUTPUT_DIR, filename),
           }),
         ],
       },
@@ -194,7 +197,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
-            filename: filename,
+            filename: path.join(OUTPUT_DIR, filename),
           }),
         ],
       },
@@ -237,6 +240,7 @@ describe('BundleTrackerPlugin bases tests', () => {
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
             publicPath: 'https://test.org/statics/',
+            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
           }),
         ],
       },
@@ -271,6 +275,7 @@ describe('BundleTrackerPlugin bases tests', () => {
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
             relativePath: true,
+            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
           }),
         ],
       },
@@ -339,21 +344,17 @@ describe('BundleTrackerPlugin bases tests', () => {
             path: OUTPUT_DIR,
             relativePath: true,
             includeParents: true,
+            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
           }),
         ],
       },
       {
         status: 'done',
         chunks: {
-          app1: ['js/vendors.js', 'js/commons.js', 'js/app1.js'],
-          app2: ['js/vendors.js', 'js/commons.js', 'js/app2.js'],
+          app1: ['js/commons.js', 'js/app1.js'],
+          app2: ['js/commons.js', 'js/app2.js'],
         },
         assets: {
-          'js/2.js': {
-            name: 'js/2.js',
-            path: 'js/2.js',
-            publicPath: 'http://localhost:3000/assets/js/2.js',
-          },
           'js/app1.js': {
             name: 'js/app1.js',
             path: 'js/app1.js',
@@ -368,11 +369,6 @@ describe('BundleTrackerPlugin bases tests', () => {
             name: 'js/commons.js',
             path: 'js/commons.js',
             publicPath: 'http://localhost:3000/assets/js/commons.js',
-          },
-          'js/vendors.js': {
-            name: 'js/vendors.js',
-            path: 'js/vendors.js',
-            publicPath: 'http://localhost:3000/assets/js/vendors.js',
           },
         },
       },
@@ -433,14 +429,15 @@ describe('BundleTrackerPlugin bases tests', () => {
             relativePath: true,
             includeParents: true,
             integrity: true,
+            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
           }),
         ],
       },
       {
         status: 'done',
         chunks: {
-          app1: ['js/vendors.js', 'js/commons.js', 'js/app1.js'],
-          appWithAssets: ['js/vendors.js', 'js/commons.js', 'styles.css', 'js/appWithAssets.js'],
+          app1: ['js/commons.js', 'js/app1.js'],
+          appWithAssets: ['js/commons.js', 'styles.css', 'js/appWithAssets.js'],
         },
         publicPath: 'http://localhost:3000/assets/',
         assets: {
@@ -449,18 +446,6 @@ describe('BundleTrackerPlugin bases tests', () => {
             path: 'js/commons.js',
             integrity: expect.stringMatching(/^^sha256-[\w+=/]+ sha384-[\w+=/]+ sha512-[\w+=/]+$/),
             publicPath: 'http://localhost:3000/assets/js/commons.js',
-          },
-          'js/vendors.js': {
-            name: 'js/vendors.js',
-            path: 'js/vendors.js',
-            integrity: expect.stringMatching(/^^sha256-[\w+=/]+ sha384-[\w+=/]+ sha512-[\w+=/]+$/),
-            publicPath: 'http://localhost:3000/assets/js/vendors.js',
-          },
-          'js/2.js': {
-            name: 'js/2.js',
-            path: 'js/2.js',
-            integrity: expect.stringMatching(/^^sha256-[\w+=/]+ sha384-[\w+=/]+ sha512-[\w+=/]+$/),
-            publicPath: 'http://localhost:3000/assets/js/2.js',
           },
           'js/app1.js': {
             name: 'js/app1.js',
@@ -557,19 +542,15 @@ describe('BundleTrackerPlugin bases tests', () => {
             path: OUTPUT_DIR,
             relativePath: true,
             includeParents: true,
+            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
           }),
         ],
       },
       {
         status: 'done',
         chunks: {
-          app1: [
-            expect.stringMatching(/^js\/vendors.js$/),
-            expect.stringMatching(/^js\/commons.js$/),
-            expect.stringMatching(/^js\/app1.js$/),
-          ],
+          app1: [expect.stringMatching(/^js\/commons.js$/), expect.stringMatching(/^js\/app1.js$/)],
           appWithAssets: [
-            expect.stringMatching(/^js\/vendors.js$/),
             expect.stringMatching(/^js\/commons.js$/),
             expect.stringMatching(/^css\/appWithAssets.css$/),
             expect.stringMatching(/^js\/appWithAssets.js$/),
@@ -580,16 +561,6 @@ describe('BundleTrackerPlugin bases tests', () => {
             name: 'js/commons.js',
             path: 'js/commons.js',
             publicPath: 'http://localhost:3000/assets/js/commons.js',
-          },
-          'js/vendors.js': {
-            name: 'js/vendors.js',
-            path: 'js/vendors.js',
-            publicPath: 'http://localhost:3000/assets/js/vendors.js',
-          },
-          'js/2.js': {
-            name: 'js/2.js',
-            path: 'js/2.js',
-            publicPath: 'http://localhost:3000/assets/js/2.js',
           },
           'js/app1.js': {
             name: 'js/app1.js',
@@ -611,16 +582,6 @@ describe('BundleTrackerPlugin bases tests', () => {
             path: 'js/commons.js.gz',
             publicPath: 'http://localhost:3000/assets/js/commons.js.gz',
           },
-          'js/vendors.js.gz': {
-            name: 'js/vendors.js.gz',
-            path: 'js/vendors.js.gz',
-            publicPath: 'http://localhost:3000/assets/js/vendors.js.gz',
-          },
-          'js/2.js.gz': {
-            name: 'js/2.js.gz',
-            path: 'js/2.js.gz',
-            publicPath: 'http://localhost:3000/assets/js/2.js.gz',
-          },
           'js/app1.js.gz': {
             name: 'js/app1.js.gz',
             path: 'js/app1.js.gz',
@@ -641,20 +602,10 @@ describe('BundleTrackerPlugin bases tests', () => {
             path: 'js/commons.js.br',
             publicPath: 'http://localhost:3000/assets/js/commons.js.br',
           },
-          'js/2.js.br': {
-            name: 'js/2.js.br',
-            path: 'js/2.js.br',
-            publicPath: 'http://localhost:3000/assets/js/2.js.br',
-          },
           'css/appWithAssets.css.br': {
             name: 'css/appWithAssets.css.br',
             path: 'css/appWithAssets.css.br',
             publicPath: 'http://localhost:3000/assets/css/appWithAssets.css.br',
-          },
-          'js/vendors.js.br': {
-            name: 'js/vendors.js.br',
-            path: 'js/vendors.js.br',
-            publicPath: 'http://localhost:3000/assets/js/vendors.js.br',
           },
           'js/app1.js.br': {
             name: 'js/app1.js.br',
