@@ -63,7 +63,7 @@ In case webpack is still compiling, it'll look like,
 
 ```json
 {
-  "status": "compiling"
+  "status": "compile"
 }
 ```
 
