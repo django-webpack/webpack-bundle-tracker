@@ -19,12 +19,12 @@
   "scripts": {
     "pretty": "prettier --loglevel warn --write lib/*.js tests/*.js",
     "pretty-lint": "prettier --check lib/*.js tests/*.js",
-    "pretest": "yarn pretty-lint",
+    "pretest": "npm run pretty-lint",
     "test": "jest --runInBand --env node",
     "test-debug": "node --inspect-brk=0.0.0.0 node_modules/jest/bin/jest --runInBand --env node",
     "posttest": "tsc",
     "test-watch": "jest --runInBand --env node --watchAll",
-    "travis": "yarn pretest && jest --runInBand --coverage --env node && codecov && yarn posttest"
+    "travis": "npm pretest && jest --runInBand --coverage --env node && npm posttest"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -48,8 +48,8 @@
     "@types/webpack": "^4.41.7",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
-    "codecov": "^3.6.5",
     "commitizen": "^4.0.3",
+    "compression-webpack-plugin": "^7.1.2",
     "css-loader": "^3.4.2",
     "cz-conventional-changelog": "3.1.0",
     "eslint": "^6.8.0",
