@@ -68,7 +68,6 @@ declare namespace BundleTrackerPlugin {
           name: string;
           publicPath?: string;
           path: string;
-          child: boolean;
         }
       ]
     };
