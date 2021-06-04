@@ -4,9 +4,9 @@
 const zlib = require('zlib');
 const path = require('path');
 const rimraf = require('rimraf');
-const webpack = require('webpack');
+const webpack5 = require('webpack5');
 
-const { OUTPUT_DIR, testPlugin, getWebpack4WarningMessage } = require('./utils.js');
+const { OUTPUT_DIR, testPlugin, getWebpack5WarningMessage } = require('./utils.js');
 
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -23,10 +23,10 @@ describe('BundleTrackerPlugin bases tests', () => {
 
   it('It should generate stats for a single entrypoint', done => {
     const expectErrors = null;
-    const expectWarnings = getWebpack4WarningMessage();
+    const expectWarnings = getWebpack5WarningMessage();
 
     testPlugin(
-      webpack,
+      webpack5,
       {
         context: __dirname,
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
@@ -65,10 +65,10 @@ describe('BundleTrackerPlugin bases tests', () => {
 
   it('It should add log time when option is set', done => {
     const expectErrors = null;
-    const expectWarnings = getWebpack4WarningMessage();
+    const expectWarnings = getWebpack5WarningMessage();
 
     testPlugin(
-      webpack,
+      webpack5,
       {
         context: __dirname,
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
@@ -99,10 +99,10 @@ describe('BundleTrackerPlugin bases tests', () => {
 
   it('It should overwrite publicPath when option is set', done => {
     const expectErrors = null;
-    const expectWarnings = getWebpack4WarningMessage();
+    const expectWarnings = getWebpack5WarningMessage();
 
     testPlugin(
-      webpack,
+      webpack5,
       {
         context: __dirname,
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
@@ -143,12 +143,12 @@ describe('BundleTrackerPlugin bases tests', () => {
 
   it('It should overwrite filename when option is set', done => {
     const expectErrors = null;
-    const expectWarnings = getWebpack4WarningMessage();
+    const expectWarnings = getWebpack5WarningMessage();
 
     const filename = 'new-stats.json';
 
     testPlugin(
-      webpack,
+      webpack5,
       {
         context: __dirname,
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
@@ -186,12 +186,12 @@ describe('BundleTrackerPlugin bases tests', () => {
 
   it('It should create intermdiate directory if filename option is set with intermdiate directory', done => {
     const expectErrors = null;
-    const expectWarnings = getWebpack4WarningMessage();
+    const expectWarnings = getWebpack5WarningMessage();
 
     const filename = 'data/stats.json';
 
     testPlugin(
-      webpack,
+      webpack5,
       {
         context: __dirname,
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
@@ -231,10 +231,10 @@ describe('BundleTrackerPlugin bases tests', () => {
     const expectErrors = expect.stringMatching(
       /^ModuleNotFoundError: Module not found: Error: (Can't resolve|Cannot resolve module) 'toto' in '?.*?\/fixtures'?$/,
     );
-    const expectWarnings = getWebpack4WarningMessage();
+    const expectWarnings = getWebpack5WarningMessage();
 
     testPlugin(
-      webpack,
+      webpack5,
       {
         context: __dirname,
         entry: path.resolve(__dirname, 'fixtures', 'index-fail.js'),
@@ -267,10 +267,10 @@ describe('BundleTrackerPlugin bases tests', () => {
 
   it('It should set relative path when option is set', done => {
     const expectErrors = null;
-    const expectWarnings = getWebpack4WarningMessage();
+    const expectWarnings = getWebpack5WarningMessage();
 
     testPlugin(
-      webpack,
+      webpack5,
       {
         context: __dirname,
         entry: path.resolve(__dirname, 'fixtures', 'index.js'),
@@ -309,10 +309,10 @@ describe('BundleTrackerPlugin bases tests', () => {
 
   it('It should show dependant files when webpack splitChunk options is used', done => {
     const expectErrors = null;
-    const expectWarnings = getWebpack4WarningMessage();
+    const expectWarnings = getWebpack5WarningMessage();
 
     testPlugin(
-      webpack,
+      webpack5,
       {
         context: __dirname,
         entry: {
@@ -390,10 +390,10 @@ describe('BundleTrackerPlugin bases tests', () => {
 
   it('It should show dependant files when webpack integrity options is used', done => {
     const expectErrors = null;
-    const expectWarnings = getWebpack4WarningMessage();
+    const expectWarnings = getWebpack5WarningMessage();
 
     testPlugin(
-      webpack,
+      webpack5,
       {
         context: __dirname,
         entry: {
@@ -485,10 +485,10 @@ describe('BundleTrackerPlugin bases tests', () => {
   });
   it('It should show compressed assets', done => {
     const expectErrors = null;
-    const expectWarnings = getWebpack4WarningMessage();
+    const expectWarnings = getWebpack5WarningMessage();
 
     testPlugin(
-      webpack,
+      webpack5,
       {
         context: __dirname,
         entry: {
