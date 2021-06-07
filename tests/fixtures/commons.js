@@ -1,9 +1,9 @@
 'use strict';
 
-const assign = require('lodash.assign');
+const assignin = require('lodash.assignin');
 
 const output = { name: '' };
 
-assign(output, { name: 'common' });
+assignin(output, { name: 'common' });
 
 module.exports = output;
