@@ -184,7 +184,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  it('It should create intermdiate directory if filename option is set with intermdiate directory', done => {
+  it('It should create intermdiate directory if filename option is set with intermediate directory', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack5WarningMessage();
 
@@ -360,8 +360,8 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
-          app1: ['js/commons.js', 'js/app1.js'],
-          app2: ['js/commons.js', 'js/app2.js'],
+          app1: ['js/vendors.js', 'js/commons.js', 'js/app1.js'],
+          app2: ['js/vendors.js', 'js/commons.js', 'js/app2.js'],
         },
         assets: {
           'js/app1.js': {
@@ -446,8 +446,8 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
-          app1: ['js/commons.js', 'js/app1.js'],
-          appWithAssets: ['js/commons.js', 'styles.css', 'js/appWithAssets.js'],
+          app1: ['js/vendors.js', 'js/commons.js', 'js/app1.js'],
+          appWithAssets: ['js/vendors.js', 'js/commons.js', 'styles.css', 'js/appWithAssets.js'],
         },
         publicPath: 'http://localhost:3000/assets/',
         assets: {
@@ -560,8 +560,13 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
-          app1: [expect.stringMatching(/^js\/commons.js$/), expect.stringMatching(/^js\/app1.js$/)],
+          app1: [
+            expect.stringMatching(/^js\/vendors.js$/),
+            expect.stringMatching(/^js\/commons.js$/),
+            expect.stringMatching(/^js\/app1.js$/),
+          ],
           appWithAssets: [
+            expect.stringMatching(/^js\/vendors.js$/),
             expect.stringMatching(/^js\/commons.js$/),
             expect.stringMatching(/^css\/appWithAssets.css$/),
             expect.stringMatching(/^js\/appWithAssets.js$/),

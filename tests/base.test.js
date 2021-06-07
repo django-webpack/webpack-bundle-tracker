@@ -360,8 +360,8 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
-          app1: ['js/commons.js', 'js/app1.js'],
-          app2: ['js/commons.js', 'js/app2.js'],
+          app1: ['js/vendors.js', 'js/commons.js', 'js/app1.js'],
+          app2: ['js/vendors.js', 'js/commons.js', 'js/app2.js'],
         },
         assets: {
           'js/app1.js': {
@@ -446,8 +446,8 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
-          app1: ['js/commons.js', 'js/app1.js'],
-          appWithAssets: ['js/commons.js', 'styles.css', 'js/appWithAssets.js'],
+          app1: ['js/vendors.js', 'js/commons.js', 'js/app1.js'],
+          appWithAssets: ['js/vendors.js', 'js/commons.js', 'styles.css', 'js/appWithAssets.js'],
         },
         publicPath: 'http://localhost:3000/assets/',
         assets: {
@@ -560,8 +560,13 @@ describe('BundleTrackerPlugin bases tests', () => {
       {
         status: 'done',
         chunks: {
-          app1: [expect.stringMatching(/^js\/commons.js$/), expect.stringMatching(/^js\/app1.js$/)],
+          app1: [
+            expect.stringMatching(/^js\/vendors.js$/),
+            expect.stringMatching(/^js\/commons.js$/),
+            expect.stringMatching(/^js\/app1.js$/),
+          ],
           appWithAssets: [
+            expect.stringMatching(/^js\/vendors.js$/),
             expect.stringMatching(/^js\/commons.js$/),
             expect.stringMatching(/^css\/appWithAssets.css$/),
             expect.stringMatching(/^js\/appWithAssets.js$/),
@@ -572,6 +577,26 @@ describe('BundleTrackerPlugin bases tests', () => {
             name: 'js/commons.js',
             path: 'js/commons.js',
             publicPath: 'http://localhost:3000/assets/js/commons.js',
+          },
+          'js/vendors.js': {
+            name: 'js/vendors.js',
+            path: 'js/vendors.js',
+            publicPath: 'http://localhost:3000/assets/js/vendors.js',
+          },
+          'js/2.js': {
+            name: 'js/2.js',
+            path: 'js/2.js',
+            publicPath: 'http://localhost:3000/assets/js/2.js',
+          },
+          'js/vendors.js.gz': {
+            name: 'js/vendors.js.gz',
+            path: 'js/vendors.js.gz',
+            publicPath: 'http://localhost:3000/assets/js/vendors.js.gz',
+          },
+          'js/2.js.gz': {
+            name: 'js/2.js.gz',
+            path: 'js/2.js.gz',
+            publicPath: 'http://localhost:3000/assets/js/2.js.gz',
           },
           'js/app1.js': {
             name: 'js/app1.js',
@@ -598,6 +623,11 @@ describe('BundleTrackerPlugin bases tests', () => {
             path: 'js/app1.js.gz',
             publicPath: 'http://localhost:3000/assets/js/app1.js.gz',
           },
+          'js/2.js.br': {
+            name: 'js/2.js.br',
+            path: 'js/2.js.br',
+            publicPath: 'http://localhost:3000/assets/js/2.js.br',
+          },
           'css/appWithAssets.css.gz': {
             name: 'css/appWithAssets.css.gz',
             path: 'css/appWithAssets.css.gz',
@@ -612,6 +642,11 @@ describe('BundleTrackerPlugin bases tests', () => {
             name: 'js/commons.js.br',
             path: 'js/commons.js.br',
             publicPath: 'http://localhost:3000/assets/js/commons.js.br',
+          },
+          'js/vendors.js.br': {
+            name: 'js/vendors.js.br',
+            path: 'js/vendors.js.br',
+            publicPath: 'http://localhost:3000/assets/js/vendors.js.br',
           },
           'css/appWithAssets.css.br': {
             name: 'css/appWithAssets.css.br',
