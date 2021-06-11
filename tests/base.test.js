@@ -120,7 +120,6 @@ describe('BundleTrackerPlugin bases tests', () => {
         ],
       },
       {
-        status: 'done',
         publicPath: 'https://test.org/statics/',
         status: 'done',
         chunks: {
