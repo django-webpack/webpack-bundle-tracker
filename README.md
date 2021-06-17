@@ -1,4 +1,5 @@
 # Webpack Bundle Tracker [![Join the chat at https://gitter.im/owais/webpack-bundle-tracker](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/owais/webpack-bundle-tracker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![master build status](https://circleci.com/gh/django-webpack/webpack-bundle-tracker.svg?style=svg)](https://circleci.com/gh/django-webpack/webpack-bundle-tracker)
 
 Spits out some stats about webpack compilation process to a file.
 
@@ -9,6 +10,13 @@ Spits out some stats about webpack compilation process to a file.
 ```bash
 npm install --save-dev webpack-bundle-tracker
 ```
+
+<br>
+
+## Compatibility
+
+This project is compatible with NodeJS versions 12 and up.
+
 
 <br>
 
