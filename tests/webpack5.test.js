@@ -1,6 +1,7 @@
 /* eslint-env jest */
 'use strict';
 
+const fs = require('fs');
 const zlib = require('zlib');
 const path = require('path');
 const rimraf = require('rimraf');
@@ -634,6 +635,72 @@ describe('BundleTrackerPlugin bases tests', () => {
       done,
       expectErrors,
       expectWarnings,
+    );
+  });
+
+  it('correctly merges chunks after multiple runs', done => {
+    fs.writeFileSync(
+      path.join(OUTPUT_DIR, 'app1.js'),
+      `require(${JSON.stringify(path.resolve(__dirname, 'fixtures', 'commons.js'))});`,
+    );
+    const compiler = webpack5(
+      {
+        context: __dirname,
+        entry: {
+          app1: path.join(OUTPUT_DIR, 'app1.js'),
+          app2: path.resolve(__dirname, 'fixtures', 'app2.js'),
+        },
+        output: {
+          path: path.join(OUTPUT_DIR, 'js'),
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
+        },
+        optimization: {
+          splitChunks: {
+            cacheGroups: {
+              vendors: {
+                name: 'vendors',
+                test: /[\\/]node_modules[\\/]/,
+                priority: -10,
+                chunks: 'initial',
+              },
+              commons: {
+                name: 'commons',
+                test: /[\\/]?commons/,
+                enforce: true,
+                priority: -20,
+                chunks: 'all',
+                reuseExistingChunk: true,
+              },
+              default: {
+                name: 'shared',
+                reuseExistingChunk: true,
+              },
+            },
+          },
+        },
+        plugins: [
+          new BundleTrackerPlugin({
+            path: OUTPUT_DIR,
+            relativePath: true,
+            includeParents: true,
+            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+          }),
+        ],
+      },
+      () => {
+        // Edit app1.js and rerun the compilation
+        fs.writeFileSync(path.join(OUTPUT_DIR, 'app1.js'), '');
+        compiler.run(() => {
+          const trackerStatsContent = fs.readFileSync(path.join(OUTPUT_DIR, 'webpack-stats.json'), 'utf8');
+          const trackerStats = JSON.parse(trackerStatsContent);
+          expect(trackerStats.chunks).toMatchObject({
+            app1: ['js/app1.js'],
+            app2: ['js/commons.js', 'js/app2.js'],
+          });
+          done();
+        });
+      },
     );
   });
 });
