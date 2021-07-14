@@ -24,7 +24,7 @@
     "test-debug": "node --inspect-brk=0.0.0.0 node_modules/jest/bin/jest --runInBand --env node",
     "posttest": "tsc",
     "test-watch": "jest --runInBand --env node --watchAll",
-    "travis": "npm pretest && jest --runInBand --coverage --env node && npm posttest"
+    "ci": "npm run pretest && jest --runInBand --coverage --env node && npm run posttest"
   },
   "jest": {
     "setupFilesAfterEnv": [
