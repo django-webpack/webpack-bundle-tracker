@@ -61,16 +61,27 @@ declare namespace BundleTrackerPlugin {
      */
     message?: string;
     /**
+     * File information
+     */
+    assets: {
+      [name: string]: {
+        name: string;
+        integrity?: string;
+        publicPath?: string;
+        path: string;
+      };
+    };
+    /**
      * List of chunks builded
      */
-    chunks?: {
+    chunks: {
       [name: string]: [
         {
           name: string;
           publicPath?: string;
           path: string;
-        }
-      ]
+        },
+      ];
     };
     /**
      * Public path of chunks
