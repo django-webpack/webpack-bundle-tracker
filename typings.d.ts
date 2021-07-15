@@ -33,7 +33,7 @@ declare namespace BundleTrackerPlugin {
      */
     relativePath?: boolean;
     /**
-     * Indent JSON ouput file
+     * Indent JSON output file
      */
     indent?: number;
     /**
