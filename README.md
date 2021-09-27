@@ -1,4 +1,5 @@
 # Webpack Bundle Tracker [![Join the chat at https://gitter.im/owais/webpack-bundle-tracker](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/owais/webpack-bundle-tracker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![master build status](https://circleci.com/gh/django-webpack/webpack-bundle-tracker.svg?style=svg)](https://circleci.com/gh/django-webpack/webpack-bundle-tracker)
 
 Spits out some stats about webpack compilation process to a file.
 
@@ -9,6 +10,13 @@ Spits out some stats about webpack compilation process to a file.
 ```bash
 npm install --save-dev webpack-bundle-tracker
 ```
+
+<br>
+
+## Compatibility
+
+This project is compatible with NodeJS versions 12 and up.
+
 
 <br>
 
@@ -173,10 +181,11 @@ passed to the `space` parameter in `JSON.stringify`. More information can be fou
 
 | Name              | Type        | Default                          | Description                                                                                                                     |
 | ----------------- | ----------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `path`            | `{String}`  | `'.'`                            | Output directory of bundle tracker JSON file .                                                                                  |
+| `path`            | `{String}`  | `'.'`                            | Output directory of bundle tracker JSON file.                                                                                   |
 | `filename`        | `{String}`  | `'webpack-stats.json'`           | Name of the bundle tracker JSON file.                                                                                           |
-| `publicPath`      | `{String}`  | `?`                              | Override `output.publicPath` from Webpack config.                                                                               |
-| `relativePath`    | `{Boolean}` | `?`                              | Show relative path instead of absolute path for bundles in JSON Tracker file. Path are relative from path of JSON Tracker file. |
+| `publicPath`      | `{String}`  | (ignored)                        | Override `output.publicPath` from Webpack config.                                                                               |
+| `relativePath`    | `{Boolean}` | `false`                          | Show relative path instead of absolute path for bundles in JSON Tracker file. Path are relative from path of JSON Tracker file. |
 | `logTime`         | `{Boolean}` | `false`                          | Output `startTime` and `endTime` properties in bundle tracker JSON file.                                                        |
 | `integrity`       | `{Boolean}` | `false`                          | Output `integrity` property for each asset entry.                                                                               |
 | `integrityHashes` | `{Array}`   | `['sha256', 'sha384', 'sha512']` | Cryptographic hash functions used to compute integrity for each asset.                                                          |
+| `indent`          | `{Integer}` | `undefined`                      | Format resulting JSON file for better readability.                                                                              |

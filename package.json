@@ -1,6 +1,6 @@
 {
   "name": "webpack-bundle-tracker",
-  "version": "1.1.0",
+  "version": "1.4.0",
   "description": "Spits out some stats about webpack compilation process to a file",
   "keywords": [
     "bundle",
@@ -24,7 +24,7 @@
     "test-debug": "node --inspect-brk=0.0.0.0 node_modules/jest/bin/jest --runInBand --env node",
     "posttest": "tsc",
     "test-watch": "jest --runInBand --env node --watchAll",
-    "travis": "npm pretest && jest --runInBand --coverage --env node && npm posttest"
+    "ci": "npm run pretest && jest --runInBand --coverage --env node && npm run posttest"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -36,16 +36,13 @@
     "lodash.defaults": "^4.2.0",
     "lodash.foreach": "^4.5.0",
     "lodash.get": "^4.4.2",
-    "lodash.merge": "^4.6.2",
     "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
     "@types/lodash.assign": "^4.2.6",
+    "@types/lodash.defaults": "^4.2.6",
     "@types/lodash.foreach": "^4.5.6",
     "@types/lodash.get": "^4.4.6",
-    "@types/lodash.merge": "^4.6.6",
-    "@types/lodash.defaults": "^4.2.6",
-    "@types/mkdirp": "^1.0.1",
     "@types/node": "^13.13.52",
     "@types/webpack": "^4.41.28",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
