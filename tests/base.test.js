@@ -2,6 +2,7 @@
 'use strict';
 
 const fs = require('fs');
+const toPairs = require('lodash.topairs');
 const zlib = require('zlib');
 const path = require('path');
 const rimraf = require('rimraf');
@@ -700,6 +701,75 @@ describe('BundleTrackerPlugin bases tests', () => {
           done();
         });
       },
+    );
+  });
+
+  it('sorts assets and chunks properties in alphabetical order', done => {
+    const expectErrors = null;
+    const expectWarnings = getWebpack4WarningMessage();
+
+    testPlugin(
+      webpack,
+      {
+        context: __dirname,
+        entry: {
+          appZ: path.resolve(__dirname, 'fixtures', 'app1.js'),
+          appA: path.resolve(__dirname, 'fixtures', 'appWithAssets.js'),
+        },
+        output: {
+          path: OUTPUT_DIR,
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
+        },
+        module: {
+          rules: [{ test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] }],
+        },
+        optimization: {
+          splitChunks: {
+            cacheGroups: {
+              commons: {
+                name: 'commons',
+                test: /[\\/]?commons/,
+                enforce: true,
+                priority: -20,
+                chunks: 'all',
+                reuseExistingChunk: true,
+              },
+              default: {
+                name: 'shared',
+                reuseExistingChunk: true,
+              },
+            },
+          },
+        },
+        plugins: [
+          new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
+          new BundleTrackerPlugin({
+            path: OUTPUT_DIR,
+            relativePath: true,
+            includeParents: true,
+            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+          }),
+        ],
+      },
+      {
+        // This object is deliberately left empty because the real test happens below,
+        // not in the comparison inside testPlugin.
+      },
+      'webpack-stats.json',
+      () => {
+        const statsStr = fs.readFileSync(path.join(OUTPUT_DIR, 'webpack-stats.json'), 'utf8');
+        const stats = JSON.parse(statsStr);
+        const assetsKeys = toPairs(stats.assets).map(pair => pair[0]);
+        const chunksKeys = toPairs(stats.chunks).map(pair => pair[0]);
+
+        expect(assetsKeys).toEqual(['css/appA.css', 'js/1.js', 'js/appA.js', 'js/appZ.js', 'js/commons.js']);
+        expect(chunksKeys).toEqual(['appA', 'appZ']);
+
+        done();
+      },
+      expectErrors,
+      expectWarnings,
     );
   });
 });
