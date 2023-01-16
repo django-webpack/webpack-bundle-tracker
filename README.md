@@ -1,5 +1,6 @@
 # Webpack Bundle Tracker [![Join the chat at https://gitter.im/owais/webpack-bundle-tracker](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/owais/webpack-bundle-tracker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![master build status](https://circleci.com/gh/django-webpack/webpack-bundle-tracker.svg?style=svg)](https://circleci.com/gh/django-webpack/webpack-bundle-tracker)
+[![master build status](https://github.com/django-webpack/webpack-bundle-tracker/actions/workflows/test.yml/badge.svg)](https://github.com/django-webpack/webpack-bundle-tracker/actions/workflows/test.yml)
+
 
 Spits out some stats about webpack compilation process to a file.
 
