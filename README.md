@@ -3,22 +3,18 @@
 
 Spits out some stats about webpack compilation process to a file.
 
-<br>
-
 ## Install
 
 ```bash
 npm install --save-dev webpack-bundle-tracker
 ```
 
-<br>
-
 ## Compatibility
 
 This project is compatible with NodeJS versions 12 and up.
 
-
-<br>
+## Migrating from version 1.x.y to 2.x.y
+Starting on version 2.0.0, when creating a new instance of `BundleTracker`, the usage of the `path` parameter has been fixed and it's now being used to generate the output path for the stats file, together with the `filename` parameter. On version 2.0.0, if the `path` parameter is ommited from the constuctor call, it will use its default value and may end up placing the stats file inside an incorrect directory. To avoid that, when migrating, double-check if the file placement is as expected. The usage of these parameters is documented [here](#usage) and [here](#options).
 
 ## Usage
 
@@ -39,13 +35,13 @@ module.exports = {
   plugins: [
     new BundleTracker({
       path: __dirname,
-      filename: './assets/webpack-stats.json',
+      filename: 'assets/webpack-stats.json',
     }),
   ],
 };
 ```
 
-`./assets/webpack-stats.json` will look like,
+The `webpack-stats.json` file will look like,
 
 ```json
 {
@@ -174,8 +170,6 @@ And in case of usage of compression plugin for webpack, the output will look lik
 By default, the output JSON will not be indented. To increase readability, you can use the `indent`
 option to make the output legible. By default it is off. The value that is set here will be directly
 passed to the `space` parameter in `JSON.stringify`. More information can be found [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
-
-<br>
 
 ## Options
 
