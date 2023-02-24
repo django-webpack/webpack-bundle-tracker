@@ -185,11 +185,11 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  it('It should create intermdiate directory if filename option is set with intermdiate directory', done => {
+  it('It should create intermdiate directory if path option is set with intermdiate directory', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack5WarningMessage();
 
-    const filename = 'data/stats.json';
+    const filename = 'stats.json';
 
     testPlugin(
       webpack5,
@@ -203,7 +203,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         },
         plugins: [
           new BundleTrackerPlugin({
-            path: OUTPUT_DIR,
+            path: path.join(OUTPUT_DIR, 'data'),
             filename,
           }),
         ],
@@ -221,7 +221,7 @@ describe('BundleTrackerPlugin bases tests', () => {
           },
         },
       },
-      filename,
+      `data/${filename}`,
       done,
       expectErrors,
       expectWarnings,

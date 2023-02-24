@@ -14,11 +14,12 @@ npm install --save-dev webpack-bundle-tracker
 This project is compatible with NodeJS versions 12 and up.
 
 ## Migrating from version 1.x.y to 2.x.y
-Starting on version 2.0.0, when creating a new instance of `BundleTracker`, the usage of the `path` parameter has been fixed and it's now being used to generate the output path for the stats file, together with the `filename` parameter. On version 2.0.0, if the `path` parameter is ommited from the constuctor call, it will attempt to place the stats file at the `output.path` directory (if also ommited, will use `'.'` as a fallback). To avoid that, when migrating, double-check if the file placement is as expected. The usage of these parameters is documented [here](#usage) and [here](#options).
+Starting on version 2.0.0, when creating a new instance of `BundleTracker`, the usage of the `path` parameter has been fixed and it's now being used to generate the output path for the stats file, together with the `filename` parameter. On version 2.0.0, if the `path` parameter is ommited from the constuctor call, it will attempt to place the stats file at the `output.path` directory (if also ommited, will use `'.'` as a fallback). Also, version 2.0.0 doesn't allow sub-directories to be included on the `filename`, only allowing to include them on the `path` param. To avoid those issues, when migrating, double-check if the file placement is as expected. The usage of these parameters is documented [here](#usage) and [here](#options).
 
 ## Usage
 
 ```javascript
+var path = require('path');
 var BundleTracker = require('webpack-bundle-tracker');
 module.exports = {
   context: __dirname,
@@ -27,15 +28,15 @@ module.exports = {
   },
 
   output: {
-    path: require('path').resolve('./assets/bundles/'),
+    path: path.resolve('./assets/bundles/'),
     filename: '[name]-[hash].js',
     publicPath: 'http://localhost:3000/assets/bundles/',
   },
 
   plugins: [
     new BundleTracker({
-      path: __dirname,
-      filename: 'assets/webpack-stats.json',
+      path: path.join(__dirname, 'assets'),
+      filename: 'webpack-stats.json',
     }),
   ],
 };
