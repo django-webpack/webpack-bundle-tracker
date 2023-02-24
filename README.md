@@ -14,7 +14,7 @@ npm install --save-dev webpack-bundle-tracker
 This project is compatible with NodeJS versions 12 and up.
 
 ## Migrating from version 1.x.y to 2.x.y
-Starting on version 2.0.0, when creating a new instance of `BundleTracker`, the usage of the `path` parameter has been fixed and it's now being used to generate the output path for the stats file, together with the `filename` parameter. On version 2.0.0, if the `path` parameter is ommited from the constuctor call, it will use its default value and may end up placing the stats file inside an incorrect directory. To avoid that, when migrating, double-check if the file placement is as expected. The usage of these parameters is documented [here](#usage) and [here](#options).
+Starting on version 2.0.0, when creating a new instance of `BundleTracker`, the usage of the `path` parameter has been fixed and it's now being used to generate the output path for the stats file, together with the `filename` parameter. On version 2.0.0, if the `path` parameter is ommited from the constuctor call, it will attempt to place the stats file at the `output.path` directory. To avoid that, when migrating, double-check if the file placement is as expected. The usage of these parameters is documented [here](#usage) and [here](#options).
 
 ## Usage
 
@@ -175,7 +175,7 @@ passed to the `space` parameter in `JSON.stringify`. More information can be fou
 
 | Name              | Type        | Default                          | Description                                                                                                                     |
 | ----------------- | ----------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `path`            | `{String}`  | `'.'`                            | Output directory of bundle tracker JSON file.                                                                                   |
+| `path`            | `{String}`  | `'.'`                            | Output directory of bundle tracker JSON file. Will attempt to use `output.path` before falling back to the default value.                                                                                   |
 | `filename`        | `{String}`  | `'webpack-stats.json'`           | Name of the bundle tracker JSON file.                                                                                           |
 | `publicPath`      | `{String}`  | (ignored)                        | Override `output.publicPath` from Webpack config.                                                                               |
 | `relativePath`    | `{Boolean}` | `false`                          | Show relative path instead of absolute path for bundles in JSON Tracker file. Path are relative from path of JSON Tracker file. |
