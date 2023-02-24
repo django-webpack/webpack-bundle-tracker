@@ -40,7 +40,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
-            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+            filename: 'webpack-stats.json',
           }),
         ],
       },
@@ -82,7 +82,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
-            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+            filename: 'webpack-stats.json',
             logTime: true,
           }),
         ],
@@ -116,7 +116,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
-            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+            filename: 'webpack-stats.json',
             publicPath: 'https://test.org/statics/',
           }),
         ],
@@ -161,7 +161,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
-            filename: path.join(OUTPUT_DIR, filename),
+            filename,
           }),
         ],
       },
@@ -204,7 +204,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         plugins: [
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
-            filename: path.join(OUTPUT_DIR, filename),
+            filename,
           }),
         ],
       },
@@ -248,7 +248,7 @@ describe('BundleTrackerPlugin bases tests', () => {
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
             publicPath: 'https://test.org/statics/',
-            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+            filename: 'webpack-stats.json',
           }),
         ],
       },
@@ -284,7 +284,7 @@ describe('BundleTrackerPlugin bases tests', () => {
           new BundleTrackerPlugin({
             path: OUTPUT_DIR,
             relativePath: true,
-            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+            filename: 'webpack-stats.json',
           }),
         ],
       },
@@ -354,7 +354,7 @@ describe('BundleTrackerPlugin bases tests', () => {
             path: OUTPUT_DIR,
             relativePath: true,
             includeParents: true,
-            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+            filename: 'webpack-stats.json',
           }),
         ],
       },
@@ -440,7 +440,7 @@ describe('BundleTrackerPlugin bases tests', () => {
             relativePath: true,
             includeParents: true,
             integrity: true,
-            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+            filename: 'webpack-stats.json',
           }),
         ],
       },
@@ -554,7 +554,7 @@ describe('BundleTrackerPlugin bases tests', () => {
             path: OUTPUT_DIR,
             relativePath: true,
             includeParents: true,
-            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+            filename: 'webpack-stats.json',
           }),
         ],
       },
@@ -684,7 +684,7 @@ describe('BundleTrackerPlugin bases tests', () => {
             path: OUTPUT_DIR,
             relativePath: true,
             includeParents: true,
-            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+            filename: 'webpack-stats.json',
           }),
         ],
       },
@@ -748,7 +748,7 @@ describe('BundleTrackerPlugin bases tests', () => {
             path: OUTPUT_DIR,
             relativePath: true,
             includeParents: true,
-            filename: path.join(OUTPUT_DIR, 'webpack-stats.json'),
+            filename: 'webpack-stats.json',
           }),
         ],
       },
