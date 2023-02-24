@@ -14,7 +14,7 @@ npm install --save-dev webpack-bundle-tracker
 This project is compatible with NodeJS versions 12 and up.
 
 ## Migrating from version 1.x.y to 2.x.y
-Starting on version 2.0.0, when creating a new instance of `BundleTracker`, the usage of the `path` parameter has been fixed and it's now being used to generate the output path for the stats file, together with the `filename` parameter. On version 2.0.0, if the `path` parameter is ommited from the constuctor call, it will attempt to place the stats file at the `output.path` directory. To avoid that, when migrating, double-check if the file placement is as expected. The usage of these parameters is documented [here](#usage) and [here](#options).
+Starting on version 2.0.0, when creating a new instance of `BundleTracker`, the usage of the `path` parameter has been fixed and it's now being used to generate the output path for the stats file, together with the `filename` parameter. On version 2.0.0, if the `path` parameter is ommited from the constuctor call, it will attempt to place the stats file at the `output.path` directory (if also ommited, will use `'.'` as a fallback). To avoid that, when migrating, double-check if the file placement is as expected. The usage of these parameters is documented [here](#usage) and [here](#options).
 
 ## Usage
 
