@@ -8,16 +8,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [18, 19]
-
-    env:
-      NODE_OPTIONS: --openssl-legacy-provider
-
+        node-version: [18]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
