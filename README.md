@@ -3,26 +3,23 @@
 
 Spits out some stats about webpack compilation process to a file.
 
-<br>
-
 ## Install
 
 ```bash
 npm install --save-dev webpack-bundle-tracker
 ```
 
-<br>
-
 ## Compatibility
 
 This project is compatible with NodeJS versions 12 and up.
 
-
-<br>
+## Migrating from version 1.x.y to 2.x.y
+Starting on version 2.0.0, when creating a new instance of `BundleTracker`, the usage of the `path` parameter has been fixed and it's now being used to generate the output path for the stats file, together with the `filename` parameter. On version 2.0.0, if the `path` parameter is ommited from the constuctor call, it will attempt to place the stats file at the `output.path` directory (if also ommited, will use `'.'` as a fallback). Also, version 2.0.0 doesn't allow sub-directories to be included on the `filename`, only allowing to include them on the `path` param. To avoid those issues, when migrating, double-check if the file placement is as expected. The usage of these parameters is documented [here](#usage) and [here](#options).
 
 ## Usage
 
 ```javascript
+var path = require('path');
 var BundleTracker = require('webpack-bundle-tracker');
 module.exports = {
   context: __dirname,
@@ -31,21 +28,21 @@ module.exports = {
   },
 
   output: {
-    path: require('path').resolve('./assets/bundles/'),
+    path: path.resolve('./assets/bundles/'),
     filename: '[name]-[hash].js',
     publicPath: 'http://localhost:3000/assets/bundles/',
   },
 
   plugins: [
     new BundleTracker({
-      path: __dirname,
-      filename: './assets/webpack-stats.json',
+      path: path.join(__dirname, 'assets'),
+      filename: 'webpack-stats.json',
     }),
   ],
 };
 ```
 
-`./assets/webpack-stats.json` will look like,
+The `webpack-stats.json` file will look like,
 
 ```json
 {
@@ -175,13 +172,11 @@ By default, the output JSON will not be indented. To increase readability, you c
 option to make the output legible. By default it is off. The value that is set here will be directly
 passed to the `space` parameter in `JSON.stringify`. More information can be found [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
 
-<br>
-
 ## Options
 
 | Name              | Type        | Default                          | Description                                                                                                                     |
 | ----------------- | ----------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `path`            | `{String}`  | `'.'`                            | Output directory of bundle tracker JSON file.                                                                                   |
+| `path`            | `{String}`  | `'.'`                            | Output directory of bundle tracker JSON file. Will attempt to use `output.path` before falling back to the default value.                                                                                   |
 | `filename`        | `{String}`  | `'webpack-stats.json'`           | Name of the bundle tracker JSON file.                                                                                           |
 | `publicPath`      | `{String}`  | (ignored)                        | Override `output.publicPath` from Webpack config.                                                                               |
 | `relativePath`    | `{Boolean}` | `false`                          | Show relative path instead of absolute path for bundles in JSON Tracker file. Path are relative from path of JSON Tracker file. |
