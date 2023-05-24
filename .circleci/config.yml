@@ -1,29 +1,30 @@
 version: 2.1
 
 jobs:
+  # This job is built separately because node <= 16 doesn't require
+  # (and will crash) if we use NODE_OPTIONS=--openssl-legacy-provider
+  # which is required for tests in more recent versions to work
+  test-node-16:
+    docker:
+      - image: cimg/node:16.20
+    steps:
+      - checkout
+      - run: |
+          echo "Node version: $(node --version)"
+          echo "NPM version:  $(npm --version)"
+          npm install
+          npm run ci
   test:
     parameters:
       node-version:
         type: string
     docker:
       - image: cimg/node:<< parameters.node-version >>
+    environment:
+      # Must be used for running the webpack@4 tests on node >= 17
+      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
-      # node >= 17 requires NODE_OPTIONS=--openssl-legacy-provider to be set
-      # in order for the webpack@4 tests to run. However, node <= 16 won't
-      # accept this env var, so it must be set dynamically depending on the
-      # node major version.
-      - run: |
-          node_version=$(node --version)
-          node_version=${node_version:1}
-          node_version=${node_version%\.*}
-          node_version=${node_version%\.*}
-          node_version=$(($node_version))
-
-          if [ $node_version -ge 17 ]
-          then
-            export NODE_OPTIONS=--openssl-legacy-provider
-          fi
       - run: |
           echo "Node version: $(node --version)"
           echo "NPM version:  $(npm --version)"
@@ -37,8 +38,9 @@ workflows:
           matrix:
             parameters:
               node-version:
-                # See https://nodejs.org/en/about/releases/
                 - "current"
                 - "lts"
-                - "16.20"  # Oldest maintenance LTS, End-of-Life 2023-09-11
           name: test-on-node-<< matrix.node-version >>
+      - test-node-16:
+          # Oldest maintenance LTS, End-of-Life 2023-09-11
+          name: test-on-node-16.20
