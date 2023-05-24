@@ -9,6 +9,21 @@ jobs:
       - image: cimg/node:<< parameters.node-version >>
     steps:
       - checkout
+      # node >= 17 requires NODE_OPTIONS=--openssl-legacy-provider to be set
+      # in order for the webpack@4 tests to run. However, node <= 16 won't
+      # accept this env var, so it must be set dynamically depending on the
+      # node major version.
+      - run: |
+          node_version=$(node --version)
+          node_version=${node_version:1}
+          node_version=${node_version%\.*}
+          node_version=${node_version%\.*}
+          node_version=$(($node_version))
+
+          if [ $node_version -ge 17 ]
+          then
+            export NODE_OPTIONS=--openssl-legacy-provider
+          fi
       - run: |
           echo "Node version: $(node --version)"
           echo "NPM version:  $(npm --version)"
@@ -23,7 +38,7 @@ workflows:
             parameters:
               node-version:
                 # See https://nodejs.org/en/about/releases/
-                - "current"  # Right now: 16.5
-                - "lts"      # Right now: 14.17
-                - "12.22"  # Oldest maintenance LTS, End-of-Life 2022-04-30
+                - "current"
+                - "lts"
+                - "16.20"  # Oldest maintenance LTS, End-of-Life 2023-09-11
           name: test-on-node-<< matrix.node-version >>
