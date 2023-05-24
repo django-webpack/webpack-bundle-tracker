@@ -13,6 +13,10 @@ npm install --save-dev webpack-bundle-tracker
 
 This project is compatible with NodeJS versions 12 and up.
 
+:warning: Starting on version 17, NodeJS uses OpenSSL v3 which has compatibility issues with Webpack@4. This isn't an issue for Webpack@5, however
+if you're using Node >= 17 and Webpack@4, to properly use this package you must ensure to set the `NODE_OPTIONS=--openssl-legacy-provider` environment
+variable. You can read more about this on https://github.com/webpack/webpack/issues/14532. 
+
 ## Migrating from version 1.x.y to 2.x.y
 Starting on version 2.0.0, when creating a new instance of `BundleTracker`, the usage of the `path` parameter has been fixed and it's now being used to generate the output path for the stats file, together with the `filename` parameter. On version 2.0.0, if the `path` parameter is ommited from the constuctor call, it will attempt to place the stats file at the `output.path` directory (if also ommited, will use `'.'` as a fallback). Also, version 2.0.0 doesn't allow sub-directories to be included on the `filename`, only allowing to include them on the `path` param. To avoid those issues, when migrating, double-check if the file placement is as expected. The usage of these parameters is documented [here](#usage) and [here](#options).
 
