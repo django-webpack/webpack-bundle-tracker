@@ -11,7 +11,7 @@ npm install --save-dev webpack-bundle-tracker
 
 ## Compatibility
 
-This project is compatible with NodeJS versions 12 and up.
+This project is compatible with NodeJS versions 16 and up.
 
 :warning: Starting on version 17, NodeJS uses OpenSSL v3 which has compatibility issues with Webpack@4. This isn't an issue for Webpack@5, however
 if you're using Node >= 17 and Webpack@4, to properly use this package you must ensure to set the `NODE_OPTIONS=--openssl-legacy-provider` environment
