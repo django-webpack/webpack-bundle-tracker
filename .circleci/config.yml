@@ -25,11 +25,11 @@ jobs:
       NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
-      - run: |
+      - run: |  # --openssl-legacy-provider is required for Webpack 4
           echo "Node version: $(node --version)"
           echo "NPM version:  $(npm --version)"
           npm install
-          npm run ci
+          NODE_OPTIONS=--openssl-legacy-provider npm run ci
 
 workflows:
   all-tests:
