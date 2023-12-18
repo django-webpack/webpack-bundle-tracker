@@ -10,8 +10,8 @@ const OUTPUT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'wbt-tests-'));
 
 function testPlugin(webpack, webpackConfig, expectedResults, outputFile, done, expectErrors, expectWarnings) {
   webpack(webpackConfig, (err, stats) => {
-    const compilationErrors = (stats.compilation.errors || []).join('\n');
-    const compilationWarnings = (stats.compilation.warnings || []).join('\n');
+    const compilationErrors = (stats?.compilation?.errors || []).join('\n');
+    const compilationWarnings = (stats?.compilation?.warnings || []).join('\n');
 
     expect(err).toBeFalsy();
 

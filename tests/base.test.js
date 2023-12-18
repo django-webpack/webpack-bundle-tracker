@@ -14,7 +14,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BundleTrackerPlugin = require('../lib/index.js');
 
-jest.setTimeout(120000);
+jest.setTimeout(30000);
 process.on('unhandledRejection', r => console.log(r));
 process.traceDeprecation = true;
 
@@ -769,6 +769,48 @@ describe('BundleTrackerPlugin bases tests', () => {
 
         done();
       },
+      expectErrors,
+      expectWarnings,
+    );
+  });
+
+  it('It should support publicPath: "auto"', done => {
+    const expectErrors = null;
+    const expectWarnings = getWebpack4WarningMessage();
+
+    testPlugin(
+      webpack,
+      {
+        context: __dirname,
+        entry: path.resolve(__dirname, 'fixtures', 'index.js'),
+        output: {
+          path: OUTPUT_DIR,
+          filename: 'js/[name].js',
+          publicPath: 'auto',
+        },
+        plugins: [
+          new BundleTrackerPlugin({
+            path: OUTPUT_DIR,
+            filename: 'webpack-stats.json',
+          }),
+        ],
+      },
+      {
+        status: 'done',
+        publicPath: 'auto',
+        chunks: {
+          main: ['js/main.js'],
+        },
+        assets: {
+          'js/main.js': {
+            name: 'js/main.js',
+            path: OUTPUT_DIR + '/js/main.js',
+            publicPath: 'auto',
+          },
+        },
+      },
+      'webpack-stats.json',
+      done,
       expectErrors,
       expectWarnings,
     );
