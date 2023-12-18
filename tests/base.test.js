@@ -9,7 +9,6 @@ const rimraf = require('rimraf');
 const webpack = require('webpack');
 
 const { OUTPUT_DIR, testPlugin, getWebpack4WarningMessage } = require('./utils.js');
-const skipIfCi = () => (process.env.CI ? it.skip : it);
 
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -24,7 +23,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     rimraf(path.join(OUTPUT_DIR, '*'), done);
   });
 
-  skipIfCi()('It should generate stats for a single entrypoint', done => {
+  it('It should generate stats for a single entrypoint', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
@@ -66,7 +65,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('It should add log time when option is set', done => {
+  it('It should add log time when option is set', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
@@ -100,7 +99,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('It should overwrite publicPath when option is set', done => {
+  it('It should overwrite publicPath when option is set', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
@@ -143,7 +142,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('It should overwrite filename when option is set', done => {
+  it('It should overwrite filename when option is set', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
@@ -186,7 +185,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('It should create intermediate directory if path option is set with intermediate directory', done => {
+  it('It should create intermediate directory if path option is set with intermediate directory', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
@@ -229,7 +228,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('It should show error when compilation errors', done => {
+  it('It should show error when compilation errors', done => {
     const expectErrors = expect.stringMatching(
       /^ModuleNotFoundError: Module not found: Error: (Can't resolve|Cannot resolve module) 'toto' in '?.*?\/fixtures'?$/,
     );
@@ -267,7 +266,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('It should set relative path when option is set', done => {
+  it('It should set relative path when option is set', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
@@ -309,7 +308,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('It should show dependant files when webpack splitChunk options is used', done => {
+  it('It should show dependant files when webpack splitChunk options is used', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
@@ -390,7 +389,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('It should show dependant files when webpack integrity options is used', done => {
+  it('It should show dependant files when webpack integrity options is used', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
@@ -486,7 +485,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('It should show compressed assets', done => {
+  it('It should show compressed assets', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
@@ -640,7 +639,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('correctly merges chunks after multiple runs', done => {
+  it('correctly merges chunks after multiple runs', done => {
     fs.writeFileSync(
       path.join(OUTPUT_DIR, 'app1.js'),
       `require(${JSON.stringify(path.resolve(__dirname, 'fixtures', 'commons.js'))});`,
@@ -706,7 +705,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  skipIfCi()('sorts assets and chunks properties in alphabetical order', done => {
+  it('sorts assets and chunks properties in alphabetical order', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
