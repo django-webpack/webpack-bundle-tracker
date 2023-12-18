@@ -185,7 +185,7 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
-  it('It should create intermdiate directory if path option is set with intermdiate directory', done => {
+  it('It should create intermediate directory if path option is set with intermediate directory', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
 
@@ -484,6 +484,7 @@ describe('BundleTrackerPlugin bases tests', () => {
       expectWarnings,
     );
   });
+
   it('It should show compressed assets', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack4WarningMessage();
