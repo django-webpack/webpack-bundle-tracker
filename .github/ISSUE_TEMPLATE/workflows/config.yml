@@ -1,0 +1,48 @@
+name: main
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  # Oldest maintenance LTS, End-of-Life 2025-04-30
+  test-node-18:
+    runs-on: ubuntu-latest
+    container:
+      image: node:18.19
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        run: |
+          echo "Node version: $(node --version)"
+          echo "NPM version:  $(npm --version)"
+          npm install
+          npm run ci
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - "current"
+          - "lts"
+    env:
+      NODE_OPTIONS: --openssl-legacy-provider
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Print Node.js version
+        run: |
+          echo "Node version: $(node --version)"
+          echo "NPM version:  $(npm --version)"
+      - name: Install dependencies and run tests
+        run: |
+          npm install
+          npm run ci
