@@ -18,6 +18,9 @@
   "license": "MIT",
   "author": "Owais Lone",
   "main": "lib/index.js",
+  "files": [
+    "lib/"
+  ],
   "types": "typings.d.ts",
   "scripts": {
     "pretty": "prettier --loglevel warn --write lib/*.js tests/*.js",
