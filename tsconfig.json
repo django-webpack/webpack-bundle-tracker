@@ -33,7 +33,7 @@
     "spec",
     "examples",
     "dist",
-    "tests",
+    "**/tests",
     "coverage"
   ]
 }
