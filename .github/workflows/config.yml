@@ -2,7 +2,7 @@ name: test
 
 on:
   push:
-    branches: [ master, fix-strip-ansi-import ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
