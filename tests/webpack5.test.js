@@ -810,7 +810,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         const assetsKeys = toPairs(stats.assets).map(pair => pair[0]);
         const chunksKeys = toPairs(stats.chunks).map(pair => pair[0]);
 
-        expect(assetsKeys).toEqual(['css/appA.css', 'js/862.js', 'js/appA.js', 'js/appZ.js', 'js/commons.js']);
+        expect(assetsKeys).toEqual(['css/appA.css', 'js/75.js', 'js/appA.js', 'js/appZ.js', 'js/commons.js']);
         expect(chunksKeys).toEqual(['appA', 'appZ']);
 
         done();
