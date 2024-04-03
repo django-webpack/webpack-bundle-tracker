@@ -638,6 +638,53 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
+  it("shows original asset's filepath", done => {
+    const expectErrors = null;
+    const expectWarnings = getWebpack5WarningMessage();
+
+    testPlugin(
+      webpack5,
+      {
+        context: __dirname,
+        entry: {
+          appWithAssetResources: path.resolve(__dirname, 'fixtures', 'appWithAssetResources.js'),
+        },
+        output: {
+          assetModuleFilename: 'assets/[name]-[contenthash][ext]',
+          path: OUTPUT_DIR,
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
+        },
+        module: {
+          rules: [{ test: /\.txt$/, type: 'asset/resource' }],
+        },
+        plugins: [
+          new BundleTrackerPlugin({
+            path: OUTPUT_DIR,
+            relativePath: true,
+            includeParents: true,
+            filename: 'webpack-stats.json',
+          }),
+        ],
+      },
+      {
+        status: 'done',
+        assets: {
+          'assets/test-bbf3c94e2a3948c98900.txt': {
+            name: 'assets/test-bbf3c94e2a3948c98900.txt',
+            path: 'assets/test-bbf3c94e2a3948c98900.txt',
+            publicPath: 'http://localhost:3000/assets/assets/test-bbf3c94e2a3948c98900.txt',
+            sourceFilename: 'fixtures/assets/resources/test.txt',
+          },
+        },
+      },
+      'webpack-stats.json',
+      done,
+      expectErrors,
+      expectWarnings,
+    );
+  });
+
   it('correctly merges chunks after multiple runs', done => {
     fs.writeFileSync(
       path.join(OUTPUT_DIR, 'app1.js'),
@@ -763,7 +810,7 @@ describe('BundleTrackerPlugin bases tests', () => {
         const assetsKeys = toPairs(stats.assets).map(pair => pair[0]);
         const chunksKeys = toPairs(stats.chunks).map(pair => pair[0]);
 
-        expect(assetsKeys).toEqual(['css/appA.css', 'js/862.js', 'js/appA.js', 'js/appZ.js', 'js/commons.js']);
+        expect(assetsKeys).toEqual(['css/appA.css', 'js/75.js', 'js/appA.js', 'js/appZ.js', 'js/commons.js']);
         expect(chunksKeys).toEqual(['appA', 'appZ']);
 
         done();
