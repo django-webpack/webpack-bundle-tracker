@@ -42,9 +42,7 @@
     "lodash.assign": "^4.2.0",
     "lodash.defaults": "^4.2.0",
     "lodash.foreach": "^4.5.0",
-    "lodash.frompairs": "^4.0.1",
-    "lodash.get": "^4.4.2",
-    "lodash.topairs": "^4.3.0"
+    "lodash.frompairs": "^4.0.1"
   },
   "devDependencies": {
     "@types/babel__traverse": "7.0.6",
@@ -53,8 +51,6 @@
     "@types/lodash.defaults": "^4.2.7",
     "@types/lodash.foreach": "^4.5.7",
     "@types/lodash.frompairs": "^4.0.7",
-    "@types/lodash.get": "^4.4.7",
-    "@types/lodash.topairs": "^4.3.7",
     "@types/node": "^13.13.52",
     "@types/webpack": "^4.41.33",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
