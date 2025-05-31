@@ -27,11 +27,11 @@
     "pretty": "prettier --loglevel warn --write lib/*.js tests/*.js",
     "pretty-lint": "prettier --check lib/*.js tests/*.js",
     "pretest": "npm run pretty-lint",
-    "test": "NODE_OPTIONS=--openssl-legacy-provider jest --runInBand --env node",
-    "test-debug": "NODE_OPTIONS=--openssl-legacy-provider node --inspect-brk=0.0.0.0 node_modules/jest/bin/jest --runInBand --env node",
+    "test": "cross-env NODE_OPTIONS=--openssl-legacy-provider jest --runInBand --env node",
+    "test-debug": "cross-env NODE_OPTIONS=--openssl-legacy-provider node --inspect-brk=0.0.0.0 node_modules/jest/bin/jest --runInBand --env node",
     "posttest": "tsc",
     "test-watch": "jest --runInBand --env node --watchAll",
-    "ci": "NODE_OPTIONS=--openssl-legacy-provider npm run pretest && jest --runInBand --coverage --env node && npm run posttest"
+    "ci": "cross-env NODE_OPTIONS=--openssl-legacy-provider npm run pretest && jest --runInBand --coverage --env node && npm run posttest"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -46,6 +46,7 @@
     "@typescript-eslint/parser": "^2.34.0",
     "commitizen": "^4.3.0",
     "compression-webpack-plugin": "^6.1.1",
+    "cross-env": "^7.0.3",
     "css-loader": "^5.2.7",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^6.8.0",
