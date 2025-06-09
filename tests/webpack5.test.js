@@ -2,7 +2,6 @@
 'use strict';
 
 const fs = require('fs');
-const toPairs = require('lodash.topairs');
 const zlib = require('zlib');
 const path = require('path');
 const rimraf = require('rimraf');
@@ -807,8 +806,8 @@ describe('BundleTrackerPlugin bases tests', () => {
       () => {
         const statsStr = fs.readFileSync(path.join(OUTPUT_DIR, 'webpack-stats.json'), 'utf8');
         const stats = JSON.parse(statsStr);
-        const assetsKeys = toPairs(stats.assets).map(pair => pair[0]);
-        const chunksKeys = toPairs(stats.chunks).map(pair => pair[0]);
+        const assetsKeys = Object.entries(stats.assets).map(pair => pair[0]);
+        const chunksKeys = Object.entries(stats.chunks).map(pair => pair[0]);
 
         expect(assetsKeys).toEqual(['css/appA.css', 'js/75.js', 'js/appA.js', 'js/appZ.js', 'js/commons.js']);
         expect(chunksKeys).toEqual(['appA', 'appZ']);
