@@ -12,7 +12,7 @@
   "homepage": "https://github.com/django-webpack/webpack-bundle-tracker",
   "bugs": "https://github.com/django-webpack/webpack-bundle-tracker/issues",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=20.0.0"
   },
   "repository": {
     "type": "git",
