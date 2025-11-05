@@ -1,6 +1,6 @@
 {
   "name": "webpack-bundle-tracker",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Spits out some stats about webpack compilation process to a file",
   "keywords": [
     "bundle",
@@ -11,6 +11,9 @@
   ],
   "homepage": "https://github.com/django-webpack/webpack-bundle-tracker",
   "bugs": "https://github.com/django-webpack/webpack-bundle-tracker/issues",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/django-webpack/webpack-bundle-tracker.git"

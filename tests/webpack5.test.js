@@ -64,6 +64,87 @@ describe('BundleTrackerPlugin bases tests', () => {
     );
   });
 
+  it('It should generate the stats file when the plugin runs twice and the output assets already exist', done => {
+    const expectErrors = null;
+    const expectWarnings = getWebpack5WarningMessage();
+
+    // 1st run
+    testPlugin(
+      webpack5,
+      {
+        context: __dirname,
+        entry: path.resolve(__dirname, 'fixtures', 'index.js'),
+        output: {
+          path: OUTPUT_DIR,
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
+        },
+        plugins: [
+          new BundleTrackerPlugin({
+            path: OUTPUT_DIR,
+            filename: 'webpack-stats.json',
+          }),
+        ],
+      },
+      {
+        status: 'done',
+        publicPath: 'http://localhost:3000/assets/',
+        chunks: {
+          main: ['js/main.js'],
+        },
+        assets: {
+          'js/main.js': {
+            name: 'js/main.js',
+            path: OUTPUT_DIR + '/js/main.js',
+            publicPath: 'http://localhost:3000/assets/js/main.js',
+          },
+        },
+      },
+      'webpack-stats.json',
+      jest.fn(),
+      expectErrors,
+      expectWarnings,
+    );
+
+    // 2nd run
+    testPlugin(
+      webpack5,
+      {
+        context: __dirname,
+        entry: path.resolve(__dirname, 'fixtures', 'index.js'),
+        output: {
+          path: OUTPUT_DIR,
+          filename: 'js/[name].js',
+          publicPath: 'http://localhost:3000/assets/',
+        },
+        plugins: [
+          new BundleTrackerPlugin({
+            path: OUTPUT_DIR,
+            filename: 'webpack-stats.json',
+          }),
+        ],
+      },
+      {
+        status: 'done',
+        publicPath: 'http://localhost:3000/assets/',
+        chunks: {
+          main: ['js/main.js'],
+        },
+        assets: {
+          'js/main.js': {
+            name: 'js/main.js',
+            path: OUTPUT_DIR + '/js/main.js',
+            publicPath: 'http://localhost:3000/assets/js/main.js',
+          },
+        },
+      },
+      'webpack-stats.json',
+      done,
+      expectErrors,
+      expectWarnings,
+    );
+  });
+
   it('It should add log time when option is set', done => {
     const expectErrors = null;
     const expectWarnings = getWebpack5WarningMessage();
